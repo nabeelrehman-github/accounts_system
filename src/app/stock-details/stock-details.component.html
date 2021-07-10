@@ -1,0 +1,199 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Stock Details</h1>
+</div>
+<hr>
+<div class="px-3">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover table-bordered text-center" id="mainProductTable">
+            <thead class="table-head">
+                <tr>
+                    <th style="width: 40px">#</th>
+                    <th style="width: 80px" scope="col">ID</th>
+                    <th style="width: 80px" scope="col">Custom ID</th>
+                    <th scope="col">Product Name</th>
+                    <th style="width: 150px" scope="col">Company</th>
+                    <th style="width: 150px" scope="col">Model</th>
+                    <th style="width: 50px" scope="col">Unit</th>
+                    <th style="width: 90px" scope="col">Item</th>
+                    <th style="width: 80px" scope="col">Total Qty</th>
+                    <th style="width: 110px" scope="col">Purchase / Unit</th>
+                    <th style="width: 90px" scope="col">Sales / Unit</th>
+                    <th style="width: 110px" scope="col">Purchase / Item</th>
+                    <th style="width: 90px" scope="col">Sales / Item</th>
+                    <th style="width: 180px" scope="col">Last Date of Stock Entry</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of productList; let i = index" (click)="getRow(i)">
+                    <td class="font-weight-bold" scope="row">{{i + 1}}</td>
+                    <td class="font-weight-bold">{{product.id}}</td>
+                    <td class="font-weight-bold">{{product.customId}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.company}}</td>
+                    <td>{{product.model}}</td>
+                    <td [class]="product.itemPerBox < 0 ? 'fw-bold' : ''">{{product.itemPerBox > -1 ? product.itemPerBox
+                        : "NIL"}}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>{{product.itemPerBox > -1 ? product.itemPerBox * product.quantity : product.quantity}}</td>
+                    <td [class]="product.itemPerBox < 0 ? 'fw-bold' : ''">{{product.itemPerBox > -1 ? product.itemPerBox
+                        * product.purchasePrice + '/-' : "NIL"}}</td>
+                    <td [class]="product.itemPerBox < 0 ? 'fw-bold' : ''">{{product.itemPerBox > -1 ? product.itemPerBox
+                        * product.salesPrice + '/-' : "NIL"}}</td>
+                    <td>{{product.purchasePrice}}/-</td>
+                    <td>{{product.salesPrice}}/-</td>
+                    <td>{{product.lastStockEntry}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container mb-5 mt-5">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">ID</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="id" style="width: 120px" type="text"
+                                class="font-weight-bold form-control" value="PL-101" [disabled]="idDisabled">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Custom ID</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="customId" style="width: 120px" type="text"
+                                class="font-weight-bold form-control" value="PL-101">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Product Name</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="productName" type="text" class="form-control">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Company</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-control" [(ngModel)]="company" style="width: 150px">
+                                <option value="">Toyota</option>
+                                <option value="">Daihatsu</option>
+                                <option value="">Honda</option>
+                                <option value="">Suzuki</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Model</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-control" [(ngModel)]="model" style="width: 150px">
+                                <option value="">Vigo</option>
+                                <option value="">Move</option>
+                                <option value="">Civic</option>
+                                <option value="">Mehran</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Date</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="dateAdded" id="dateAdded" type="text" class="form-control"
+                                [(ngModel)]="dateAdded" disabled>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">{{!disableCheckbox() ? 'Item':'Item / Unit'}}</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="quantity" style="width: 120px" type="text" class="form-control">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Unit</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="itemPerBox" style="width: 120px" type="text" class="form-control"
+                                [disabled]="!disableCheckbox()">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="switch">
+                            <input (change)="checked()" id="switch-1" type="checkbox" class="switch-input"
+                                [(ngModel)]="isChecked" />
+                            <label for="switch-1" class="switch-label">Switch</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Sales Price</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Per Item</div>
+                                </div>
+                                <input [(ngModel)]="salesPrice" style="width: 120px" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Purchase Price</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Per Item</div>
+                                </div>
+                                <input [(ngModel)]="purchasePrice" style="width: 120px" type="text"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="mt-5">
+                            <button (click)="submit()" class="btn btn-success">Update</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mt-5">
+                            <a routerLink="/add_stock_item" class="btn btn-light mx-2">Add Product</a>
+                            <a routerLink="/add-category" class="btn btn-light mx-2">Add Company</a>
+                            <a class="btn btn-light mx-2">Add Model</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="mt-2 ml-5">
+                            <button (click)="clearAll()" class="btn btn-dark">Clear All</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

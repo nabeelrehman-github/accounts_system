@@ -1,0 +1,94 @@
+<div class="jumbotron text-center pb-1 mb-0">
+    <h1 class="display-6 mt-3">Add New Product</h1>
+</div>
+<hr>
+<div class="px-3">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar container">
+        <table class="table table-hover table-bordered text-center" id="mainProductTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Date Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of productList;let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{product.id}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container p-5 my-5">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">ID</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="id" style="width: 120px" type="text"
+                                class="font-weight-bold form-control">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Product Name</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="productName" type="text" class="form-control">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Category</label>
+                        </div>
+                        <div class="col-auto" id="colCategory">
+                            <select class="form-control" [(ngModel)]="category">
+                                <option value="">Plasstic Utensils</option>
+                                <option value="">Glass Utensils</option>
+                                <option value="">Stationery</option>
+                                <option value="">Eatables</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-auto">
+                            <label class="col-form-label">Date</label>
+                        </div>
+                        <div class="col-auto">
+                            <input [(ngModel)]="dateAdded" id="dateAdded" type="text" class="form-control"
+                                [(ngModel)]="dateAdded" disabled>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="mt-5">
+                            <button (click)="submit()" class="btn btn-lg btn-success ml-5">Add</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mt-5">
+                            <a routerLink="/add-category" class="btn btn-lg btn-light ml-5">Add Category</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="mt-2 ml-5">
+                            <button (click)="clearAll()" class="btn btn-lg btn-dark">Clear All</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

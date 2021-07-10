@@ -1,0 +1,41 @@
+#table2 td {
+    padding: 0 5px 0 5px;
+}
+
+#mainProductTable {
+    cursor: pointer;
+}
+
+th {
+    height: 30px;
+    background: white;
+    position: sticky;
+    position: -webkit-sticky;
+    top: -5px;
+    /* Don't forget this, required for the stickiness */
+}
+
+.productValue {
+    cursor: pointer;
+}
+
+.search-box {
+    position: absolute;
+    height: 300px;
+    width: 700px;
+    background-color: rgb(255, 255, 255);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 3px;
+    display: none;
+}
+
+.search-table tr{
+    margin: 20px 0 20px 0;
+    font-size: 30px;
+}
+
+.show{
+    display: block;
+}

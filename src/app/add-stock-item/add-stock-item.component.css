@@ -1,0 +1,22 @@
+th,
+td {
+    padding: 0.25rem;
+}
+
+#mainProductTable th,
+#mainProductTable td {
+    cursor: pointer;
+}
+
+th {
+    height: 30px;
+    background: white;
+    position: sticky;
+    position: -webkit-sticky;
+    top: -5px;
+    /* Don't forget this, required for the stickiness */
+}
+
+#colCategory{
+    width: 220px;
+}

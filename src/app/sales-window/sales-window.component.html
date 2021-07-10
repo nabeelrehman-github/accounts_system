@@ -1,0 +1,209 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Sales Window</h1>
+</div>
+<hr class="my-1">
+<div class="px-3">
+    <div class="row">
+        <div class="col-sm">
+            <table class="mb-2">
+                <tbody>
+                    <tr>
+                        <td><b>Search By: </b></td>
+                        <td>
+                            <div class="form-check mx-2">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                                    value="option1" checked>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    ID
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check mx-2">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                                    value="option1">
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Name
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="input-group mb-3" style="width: 500px">
+                <input (focusout)="toggleSearchDropDown()" (focus)="toggleSearchDropDown()" class="form-control" placeholder="Search Product" autocomplete="off" >
+                <!-- <button class="btn btn-dark input-group-text">Add</button> -->
+            </div>
+            <div [class]="showSearch" class="search-box">
+                <table id="search-table">
+                    <tbody>
+                        <tr>
+                            <td  style="width: 150px"class="font-weight-bold" scope="row"><b>PL-101</b></td>
+                            <td style="width: 150px">Plastic Plate</td>
+                            <td style="width: 150px">Utensils</td>
+                            <td>
+                                <button class="btn btn-dark input-group-text">Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover table-bordered text-center" id="mainProductTable">
+            <thead class="table-head">
+                <tr>
+                    <th style="width: 120px" scope="col" class="p-0">ID</th>
+                    <th scope="col" class="p-0">Product Name</th>
+                    <th style="width: 230px" scope="col" class="p-0">Quantity</th>
+                    <th style="width: 200px" scope="col" class="p-0">Price</th>
+                    <th style="width: 200px" scope="col" class="p-0">Total</th>
+                    <th style="width: 100px" scope="col" class="p-0">Action</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let product of productList;let i = index">
+                <tr>
+                    <td class="p-0">{{product.id}}</td>
+                    <td class="p-0">{{product.name}}</td>
+                    <td class="p-0">
+                        <div class="row">
+                            <div class="col-sm p-2 px-3 pr-0">
+                                <input style="width:100px" (change)="onValueChanged($event, i)" type="text"
+                                    class="productValue form-control p-1 text-center" [value]="product.quantity">
+                            </div>
+                            <div class="col-sm p-0 pt-1">
+                                <div class="row justify-content-center m-0 mr-2">
+                                    <div (click)="increaseQuantity(i)" class="btn btn-sm col-4 p-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="35"
+                                            fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
+                                        </svg>
+                                    </div>
+                                    <div (click)="decreseQuantity(i)" class="btn btn-sm col-4 p-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="35"
+                                            fill="currentColor" class="bi bi-arrow-down-square-fill"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-0">{{product.salesPrice}}</td>
+                    <td class="p-0">{{product.salesPrice * product.quantity}}</td>
+                    <td class="p-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="35" fill="currentColor"
+                            class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1z" />
+                        </svg>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm" style="font-size: 20px;">
+            <table id="table2" class="my-1">
+                <tbody>
+                    <tr class="border">
+                        <td>Invoice #</td>
+                        <td style="width:50px"></td>
+                        <td><b>123</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Date</td>
+                        <td style="width:50px"></td>
+                        <td><b>30/3/2021</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Customer #</td>
+                        <td style="width:50px"></td>
+                        <td><b>123</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Customer Type</td>
+                        <td style="width:50px"></td>
+                        <td>
+                            <select class="form-control p-1" style="font-size: 20px; color: green;">
+                                <option value="0">Cash in Hand</option>
+                                <option value="1">Regular Customer</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="border">
+                        <td>Refrence</td>
+                        <td style="width:50px"></td>
+                        <td><b>NIL</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <button (click)="submit()" class="btn btn-success mx-3">Checkout</button>
+            <!-- <button class="btn btn-danger mx-3">Exit</button> -->
+        </div>
+        <div class="col-sm" style="font-size: 20px;">
+            <table id="table2">
+                <tbody>
+                    <tr class="border">
+                        <td>Total Items:</td>
+                        <td style="width:50px"></td>
+                        <td><b>{{productList?.length || 0}}</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Gross:</td>
+                        <td style="width:50px"></td>
+                        <td><b>{{grossPrice}}</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Discount:</td>
+                        <td style="width:50px"></td>
+                        <td>
+                            <input (change)="calculateDiscount($event)" type="text"
+                                class="form-control p-1" style="font-size: 20px; width: 120px" value=0>
+                        </td>
+                    </tr>
+                    <tr class="border">
+                        <td>Net:</td>
+                        <td style="width:50px"></td>
+                        <td><b>{{netPrice}}</b></td>
+                    </tr>
+                    <tr class="border">
+                        <td>Cash Received:</td>
+                        <td style="width:50px"></td>
+                        <td>
+                            <input (change)="calculateCashReceived($event)" type="text"
+                                class="form-control p-1" style="font-size: 20px; width: 120px" value=0>
+                        </td>
+                    </tr>
+                    <tr class="border">
+                        <td>Change:</td>
+                        <td style="width:50px"></td>
+                        <td><b>{{cashChange}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="row ml-5">
+                <div class="col-sm border">
+                    <span>Gross Total: </span><b>600</b>
+                </div>
+            </div>
+            <div class="row my-1 ml-5 border">
+                <div class="col-sm">
+                    <span>Disc: </span><b>50</b>
+                </div>
+            </div>
+            <div class="row my-1 ml-5 border">
+                <div class="col-sm">
+                    <span>Net Total: </span><b>550</b>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
