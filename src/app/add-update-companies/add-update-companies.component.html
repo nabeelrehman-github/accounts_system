@@ -1,0 +1,42 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Companies Detail</h1>
+</div>
+<hr>
+<div class="px-3 container">
+    <div class="row">
+        <div class="col">
+            <table>
+                <tbody>
+                    <tr>
+                        <label class="h6 m-0 p-0">Company Name</label>
+                        <div class="mt-3">
+                            <input [(ngModel)]="companyName" id="companyName" type="text " class="form-control limit-feilds">
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-5 ">
+                <button class="btn btn-dark ">{{isUpdate ? 'Update' : 'Add'}}</button>
+                <button class="btn btn-secondary mx-5" (click)="clear()">Clear</button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-hover table-bordered text-center" id="mainCompanyTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 10px;">#</th>
+                            <th style="width: 10px;">Company Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let company of companies; let i = index" (click)="getRow(company.id, company.name)">
+                            <td class="fw-bold" scope="row">{{i + 1}}</td>
+                            <td>{{company.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

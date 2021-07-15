@@ -1,68 +1,43 @@
-<!-- <nav class="navbar navbar-expand-lg navbar navbar-dark sticky-top bg-dark px-5 py-3">
-    <div class="container-fluid">
-        <a class="navbar-brand h1 mb-0" href="#">Stock Managemet</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" routerLink="/sales">Sales Window</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" routerLink="/stock-details">Stock Details</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" routerLink="/add-stock-item">Add Product</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" routerLink="/add-category">Add Category</a>
-                </li>
-            </ul>
-            <div class="nav-log">
-                <button [class]="isAuthenticated ? 'btn-danger' : 'btn-success'" class="btn">{{isAuthenticated ?
-                    'Logout' : 'Login'}}</button>
-            </div>
-        </div>
-    </div>
-</nav> -->
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid px-5">
-        <a class="navbar-brand" href="#">Navbar scroll</a>
+        <a class="navbar-brand" (click)="logoRedirect()">Ramzan Battery Center</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                <li class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" routerLink="invoice">Invoice</a>
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="customer_invoice">Customer Invoice</a>
                 </li>
-                <li class="nav-item">
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="supplier_invoice">Supplier Invoice</a>
+                </li>
+                <li *ngIf="isAuthenticated && (loggedUserRole == 'admin')" class="nav-item">
                     <a class="nav-link" routerLinkActive="active" routerLink="stock_details">Stock Details</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Update Stock</a>
-                </li>
-                <li class="nav-item dropdown">
+
+                <li *ngIf="isAuthenticated && (loggedUserRole == 'admin')" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" href="#">Add Branch</a></li>
-                        <li><a class="dropdown-item" href="#">Add Companies</a></li>
-                        <li><a class="dropdown-item" href="#">Add Customer</a></li>
-
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_stock_item">Update
+                                Stock</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_company">Update
+                                Companies</a>
+                        </li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_branch">Update
+                                Branch</a></li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_customer">Update
+                                Customer</a></li>
                     </ul>
                 </li>
             </ul>
             <form class="d-flex">
-                <button [class]="isAuthenticated ? 'btn-danger' : 'btn-success'" class="btn" type="submit">{{isAuthenticated ?
-                    'Logout' : 'Login'}}</button>
+                <button [class]="isAuthenticated ? 'btn-danger' : 'btn-success'" (click)="log()" class="btn" type="submit">{{isAuthenticated ? 'Logout' : 'Login'}}</button>
             </form>
         </div>
     </div>
@@ -92,19 +67,47 @@
 <br>
 <br>
 <!-- Modal -->
-<div class="modal fade" tabindex="-1" id="info-model">
+<!-- <div class="modal fade" tabindex="-1" id="info-model">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 [ngClass]="textClass" class="modal-title">{{modalMessage}}</h5>
+                <h3 [ngClass]="textClass" class="modal-title text-center"></h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
         </div>
     </div>
-    <footer>
-        <div id="footer" class="py-4">
-            <div class="container">
-                <span class="text-muted">All rights reserved.</span>
+</div> -->
+<div class="modal fade" tabindex="-1" id="info-model">
+    <div class="modal-dialog p-0">
+        <div class="modal-content p-0 m-0">
+            <div class="row justify-content-between">
+                <div [ngClass]="textClass" class="col alert d-flex align-items-center m-0" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+                        <use xlink:href="#info-fill" />
+                    </svg>
+                    <div class="model-text">
+                        {{modalMessage}}
+                    </div>
+                </div>
+                <!-- <div class="modal-header">
+                <h3 [ngClass]="textClass" class="modal-title">{{modalMessage}}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> -->
+                <div class="col mt-3 mx-3">
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+</div>
+
+
+
+<footer>
+    <div id="footer" class="py-5">
+        <hr>
+        <div class="container">
+            <span class="text-muted">All rights reserved.</span>
+        </div>
+    </div>
+</footer>

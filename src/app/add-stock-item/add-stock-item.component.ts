@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataAccessService } from '../data-access.service';
-import { Product } from '../models/product';
+import { DataAccessService } from '../services/data_access/data-access.service';
+import { InvoiceItem } from '../models/InvoiceItem';
 declare var $: any;
 
 @Component({
@@ -9,47 +9,72 @@ declare var $: any;
   styleUrls: ['./add-stock-item.component.css']
 })
 export class AddStockItemComponent implements OnInit {
-  id = "";
-  itemsPerBoxDisabled = false;
-  dateAdded = new Date().toLocaleDateString();
-  productName = "";
-  quantity = "";
-  itemPerBox = "";
-  salesPrice = "";
-  purchasePrice = "";
-  category = "";
-  isChecked = false;
+  isUpdate!: boolean;
+  isAdd!: boolean;
 
-  productList: Product[] = []
+  company: string = 'company';
+  vendor: string = 'vendor';
+  purchasePrice!: number;
+  salesPrice!: number;
 
-  constructor(public dataAccess: DataAccessService) { }
+  newQuantity!: number;
+  modelName: string = this.isUpdate ? 'model name' : '';
+
+  alreadyInStock: number = 10;
+
+  selectedCompany!: number;
+  selectedModel!: number;
+  selectedVendor!: number;
+
+  companies = [
+    { id: 1, name: 'Osaka' },
+    { id: 2, name: 'Exide' },
+    { id: 3, name: 'Power' },
+    { id: 4, name: 'Audi' },
+    { id: 5, name: 'AGS' }
+  ];
+
+  models = [
+    { id: 1, name: 'LX-1', rate: 15000 },
+    { id: 2, name: 'LX-2', rate: 16000 },
+    { id: 3, name: 'LX-3', rate: 17000 },
+    { id: 4, name: 'LX-4', rate: 18000 }
+  ];
+
+  vendors = [
+    { id: 1, name: 'Subhan Traders', address: 'ABC' },
+    { id: 2, name: 'Osaka Premium Traders', address: 'XYZ' }
+  ];
+
+  productList: InvoiceItem[] = []
+
+  constructor(public dataAccess: DataAccessService) {
+  }
 
   ngOnInit(): void {
-  }
-
-  checked() {
-    this.itemsPerBoxDisabled = !this.itemsPerBoxDisabled;
-  }
-  disableCheckbox() {
-    return this.itemsPerBoxDisabled;
+    this.dataAccess.getAddUpdateItem().subscribe(
+      res => {
+        this.isUpdate = res.isUpdate === undefined ? false : res.isUpdate;
+        this.isAdd = !this.isUpdate;
+        if (this.isUpdate) {
+          this.company = res.companyName;
+          this.modelName = res.modelName;
+          this.vendor = res.venderName;
+          this.alreadyInStock = res.alreadyInStock;
+          this.salesPrice = res.salesPrice;
+          this.purchasePrice = res.purchasePrice;
+        }
+      }
+    );
   }
   clearAll() {
-    this.id = "";
-    this.dateAdded = new Date().toLocaleDateString();
-    this.productName = "";
-    this.quantity = "";
-    this.itemPerBox = "";
-    this.salesPrice = "";
-    this.purchasePrice = "";
-    this.isChecked = false;
-    this.itemsPerBoxDisabled = false;
-    this.category = "";
+
   }
 
   submit() {
-    this.productList.push(new Product(this.id, this.productName, "Sales Product", this.dateAdded));
-    console.log(this.productList)
-    this.dataAccess.setModal("Success", "success");
-    $("#info-model").modal("toggle");
+    //   this.productList.push(new InvoiceItem(this.id, this.productName, "Sales Product", this.dateAdded));
+    //   console.log(this.productList)
+    //   this.dataAccess.setModal("Success", "success");
+    //   $("#info-model").modal("toggle");
   }
 }

@@ -7,12 +7,13 @@ import { DataAccessService } from '../services/data_access/data-access.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-invoice',
-  templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.css']
+  selector: 'app-supplier-invoice',
+  templateUrl: './supplier-invoice.component.html',
+  styleUrls: ['./supplier-invoice.component.css']
 })
-export class CustomerInvoiceComponent implements OnInit {
+export class SupplierInvoiceComponent implements OnInit {
   invoiceRequest: SaveInvoiceRequest = new SaveInvoiceRequest();
+
   invoiceDate: number = Date.now();
 
   allowSubmit: boolean = false;
@@ -23,6 +24,9 @@ export class CustomerInvoiceComponent implements OnInit {
   selectedPayment: number;
   selectedCustomer: number;
 
+  miscCharges: number = 100;
+  miscDesc: string = 'Acid and Charging';
+
   quantity!: number;
   price!: number;
   subtotal: number = 0;
@@ -31,10 +35,6 @@ export class CustomerInvoiceComponent implements OnInit {
 
   models: ProductDetails.Models[];
   customerType: Customers[];
-
-  miscCharges: number = 100;
-  miscDesc: string = 'Acid and Charging';
-
   testModels1: ProductDetails.Models[] = [
     { id: 3, productId: 'MR35 Volta Fujika' }
   ];
@@ -44,7 +44,7 @@ export class CustomerInvoiceComponent implements OnInit {
 
   companies: ProductDetails.Companies[] = [
     { id: 1, companyName: 'Osaka', models: this.testModels1 },
-    { id: 4, companyName: 'Exide', models: this.testModels2 }
+    { id: 2, companyName: 'Exide', models: this.testModels2 }
   ];
 
   products: ProductDetails.Products[] = [
@@ -71,7 +71,7 @@ export class CustomerInvoiceComponent implements OnInit {
   constructor(
     public dataAccess: DataAccessService) {
     this.customerType = this.customers.filter(i => {
-      return (i.customerType == 1);
+      return (i.customerType == 2);
     })
   }
 
@@ -85,7 +85,6 @@ export class CustomerInvoiceComponent implements OnInit {
       this.companies.forEach((i) => {
         if (i.id == this.selectedCompany) {
           item.company = i.companyName;
-          item.companyId = i.id;
         }
       });
 
@@ -93,7 +92,6 @@ export class CustomerInvoiceComponent implements OnInit {
         if (i.id = this.selectedModel) {
           item.model = i.productId;
           item.rate = this.price;
-
           item.subtotal = this.price * this.quantity;
         } else return;
       });
@@ -104,7 +102,9 @@ export class CustomerInvoiceComponent implements OnInit {
 
 
       this.clearFields();
-
+      // Show Modal
+      // this.dataAccess.setModal("Invalid Fields.", "danger");
+      // $("#info-model").modal("toggle");
     }
   }
 
@@ -165,6 +165,7 @@ export class CustomerInvoiceComponent implements OnInit {
 
       let invoiceRequestItemList: InvoiceItemRequest[] = [];
 
+      // Converting InvoiceItem to InvoiceItemRequest
       this.itemList.forEach(item => {
         let invoiceRequestItem: InvoiceItemRequest = new InvoiceItemRequest();
 
@@ -178,7 +179,7 @@ export class CustomerInvoiceComponent implements OnInit {
 
       this.invoiceRequest.invoiceDetails = invoiceRequestItemList;
 
-      this.dataAccess.callSaveSellerInvoice(this.invoiceRequest).subscribe(
+      this.dataAccess.callSaveSupplierInvoice(this.invoiceRequest).subscribe(
         res => {
           if (res.statusCode == StatusCode.SUCCESS_CODE) {
             // Show Modal
@@ -208,4 +209,5 @@ export class CustomerInvoiceComponent implements OnInit {
   //   }
   //   console.log(this.allowSubmit);
   // }
+
 }

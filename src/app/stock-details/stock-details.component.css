@@ -1,14 +1,14 @@
 .table {
     table-layout: fixed;
 }
-th,
+
 td {
-    padding: 0.25rem;
+    padding: 0.05rem;
+    padding-bottom: 0;
 }
 
-#mainProductTable th,
-#mainProductTable td {
-    cursor: pointer;
+th {
+    padding: 0.5rem;
 }
 
 th {
@@ -22,4 +22,21 @@ th {
 
 #dateAdded {
     width: 120px
+}
+
+.limit-feilds {
+    width: 250px;
+}
+
+table {
+    font-size: 1rem;
+}
+
+.update-entry {
+    cursor: pointer;
+}
+
+.update-entry:hover {
+    transition: all ease-in-out 0.3s;
+    background-color: rgb(224, 224, 224);
 }

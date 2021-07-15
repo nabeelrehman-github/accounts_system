@@ -3,8 +3,12 @@ td {
     padding: 0.25rem;
 }
 
-#mainProductTable th,
-#mainProductTable td {
+table {
+    font-size: 1.1rem;
+}
+
+#mainCompanyTable th,
+#mainCompanyTable td {
     cursor: pointer;
 }
 
@@ -17,20 +21,8 @@ th {
     /* Don't forget this, required for the stickiness */
 }
 
-#main td {
-    padding: 10px
-}
-
-#colCategory {
-    width: 220px;
-}
-
 .limit-feilds {
     width: 200px;
-}
-
-.vendor-feild {
-    width: 20rem;
 }
 
 .btn-secondary {

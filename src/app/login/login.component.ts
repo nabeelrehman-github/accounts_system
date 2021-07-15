@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataAccessService } from '../data-access.service';
-import { LoginRequest } from '../models/request/LoginRequest';
+import { LoginRequest } from '../models/login/login-request';
+import { LoginResponse } from '../models/response/login-response';
+import { StatusCode } from '../models/status-codes';
+import { AuthenticationService } from '../services/authentication/authentication.service';
+import { DataAccessService } from '../services/data_access/data-access.service';
+import { UtilityService } from '../services/utility.service';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +13,23 @@ import { LoginRequest } from '../models/request/LoginRequest';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user: LoginRequest = new LoginRequest();
+  username: string;
+  password: string;
+  loginRequest: LoginRequest = new LoginRequest();
   isInvalid = false;
 
+  loggedUser: LoginResponse.ProfileData;
+
+  profileData: LoginResponse.ProfileData[] = [
+    { firstName: 'Nabeel', lastName: 'Rehman', branchName: 'Main Branch', branchId: 1, userName: 'nabeel', userRole: 'user' },
+    { firstName: 'Muneeb', lastName: 'Rehman', branchName: 'Main Branch', branchId: 1, userName: 'mrehman', userRole: 'admin' }
+  ]
+
   constructor(
-    private dataService: DataAccessService,
-    private router: Router
+    private router: Router,
+    private authService: AuthenticationService,
+    private dataAccessService: DataAccessService,
+    private utilityService: UtilityService
   ) { }
 
   ngOnInit(): void {
@@ -25,13 +40,32 @@ export class LoginComponent implements OnInit {
   }
 
   attemptLogin() {
-    console.log(this.user)
-    if (this.user.username == "admin" && this.user.password == "admin") {
-      this.dataService.setAuthentication(true)
-      this.router.navigate(['./stock_details']);
+    this.loginRequest.userName = this.username;
+    this.loginRequest.password = this.password;
+
+    if(this.loginRequest.userName != null && this.loginRequest.password != null && this.loginRequest.userName != '' && this.loginRequest.password != ''){
+      console.log('attempting login')
+      this.dataAccessService.authorizeLogin(this.loginRequest).subscribe(
+        res => {
+          console.log(res.statusCode)
+          if(res.statusCode == StatusCode.SUCCESS_CODE){
+            this.loggedUser = res.data;
+            
+            this.authService.setLoggedUser(this.loggedUser);
+            this.authService.setAuthentication(true);
+            this.authService.setRole(this.loggedUser.userRole);
+
+            this.utilityService.setBranch(this.loggedUser.branchId);
+            this.utilityService.setUsername(this.loggedUser.userName);
+
+            this.router.navigate(['customer_invoice']);
+          } else if (res.statusCode == StatusCode.AUTH_FAILURE){
+            this.isInvalid = true;
+          }
+        }
+      );
     } else {
       this.isInvalid = true;
     }
   }
-
 }
