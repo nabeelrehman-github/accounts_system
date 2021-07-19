@@ -1,0 +1,100 @@
+td,
+th,
+tr,
+table {
+    border-top: 1px solid black;
+    border-collapse: collapse;
+}
+
+th.description {
+    font-size: 20px;
+    width: 120px;
+    max-width: 120px;
+    text-align: center;
+}
+
+td.description {
+    font-size: 15px;
+    width: 120px;
+    max-width: 120px;
+    text-align: center;
+}
+
+.address {
+    font-size: 20px !important;
+}
+
+td.quantity,
+th.quantity {
+    font-size: 15px;
+    width: 30px;
+    max-width: 30px;
+    word-break: break-all;
+    text-align: right;
+}
+
+td.price,
+th.price {
+    font-size: 15px;
+    width: 70px;
+    max-width: 70px;
+    word-break: break-all;
+    text-align: right;
+}
+
+td.total,
+th.total {
+    font-size: 15px;
+    width: 70px;
+    max-width: 70px;
+    word-break: break-all;
+    text-align: right;
+}
+
+.centered {
+    font-size: 22px !important;
+    font-weight: bolder;
+    margin-right: 30px;
+    text-align: center;
+    align-content: center;
+}
+
+.ticket {
+    width: 290px;
+    max-width: 290px;
+}
+
+.info {
+    font-size: 22px !important;
+    font-weight: bolder;
+    text-align: right;
+    align-content: right;
+    word-spacing: 5px;
+    line-height: 25px;
+}
+
+img {
+    max-width: inherit;
+    width: inherit;
+}
+
+span {
+    font-size: 19px !important;
+}
+
+.extras {
+    font-size: 21px !important;
+    text-align: right;
+    line-height: 35px;
+}
+
+.miscInfo {
+    font-size: 15px !important;
+}
+
+@media print {
+    .hidden-print,
+    .hidden-print * {
+        display: none !important;
+    }
+}

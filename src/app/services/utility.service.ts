@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { CompaniesData } from '../models/companies-response';
+import { InvoiceReceipt } from '../models/invoice-receipt';
+import { Customers, ProductDetails } from '../models/prefetch-response';
 
 @Injectable({
   providedIn: 'root'
@@ -10,27 +13,66 @@ export class UtilityService {
 
   private branchSubject: Subject<number>;
   private usernameSubject: Subject<string>;
+  private receiptSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private invoiceReceipt: BehaviorSubject<InvoiceReceipt> = new BehaviorSubject(null);
+  private customersDetailsSubject: BehaviorSubject<Customers[]> = new BehaviorSubject(null);
 
   getBranch(){
-    // this.branchSubject.next(Number.parseInt(sessionStorage.getItem('branchId')));
+    // this.branchSubject.next(Number.parseInt(localStorage.getItem('branchId')));
     // return this.branchSubject.asObservable();
-    return Number.parseInt(sessionStorage.getItem('branchId'));
+    return Number.parseInt(localStorage.getItem('branchId'));
   }
 
   setBranch(data: number){
-    sessionStorage.setItem('branchId', data.toString());
+    localStorage.setItem('branchId', data.toString());
     //this.branchSubject.next(data);
   }
 
   getUsername(){
-    // this.usernameSubject.next(sessionStorage.getItem('username'));
+    // this.usernameSubject.next(localStorage.getItem('username'));
     // return this.usernameSubject.asObservable();
-    return sessionStorage.getItem('username');
+    return localStorage.getItem('username');
   }
 
   setUsername(data: string){
-    sessionStorage.setItem('username', data);
+    localStorage.setItem('username', data);
     // this.usernameSubject.next(data);
+  }
+
+  getReceipt(){
+    return localStorage.getItem('receipt') == 'true';
+    //  this.receiptSubject.asObservable();
+  }
+
+  setReceipt(data: boolean){
+    localStorage.setItem('receipt', data ? 'true' : 'false');
+    // this.receiptSubject.next(data)
+  }
+
+  setInvoiceReceipt(data: InvoiceReceipt){
+    localStorage.setItem('invoiceReceipt', JSON.stringify(data))
+  }
+
+  getInvoiceReceipt(){
+    return JSON.parse(localStorage.getItem('invoiceReceipt'));
+  }
+
+  setCustomerDetails(data: Customers[]){
+    localStorage.setItem('customerDetails', JSON.stringify(data))
+    this.customersDetailsSubject.next(data);
+  }
+
+  getCustomerDetails(){
+    this.customersDetailsSubject.next(JSON.parse(localStorage.getItem('customerDetails')))
+    return this.customersDetailsSubject.asObservable();
+  }
+
+  setCompanies(data: CompaniesData[]){
+    localStorage.setItem('companies', JSON.stringify(data))
+  }
+
+  getCompanies(): CompaniesData[]{
+    return JSON.parse(localStorage.getItem('companies'));
   }
   
 }

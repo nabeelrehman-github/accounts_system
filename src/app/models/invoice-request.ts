@@ -5,6 +5,8 @@ export class SaveInvoiceRequest {
     misc_desc!: string;
     paymentType!: number;
     invoiceDetails!: InvoiceItemRequest[];
+    phoneNumber: string;
+    customerName: string;
 }
 
 export class InvoiceItemRequest {

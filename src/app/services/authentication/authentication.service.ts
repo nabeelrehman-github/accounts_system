@@ -15,18 +15,22 @@ export class AuthenticationService {
   role = new BehaviorSubject<string>(null);
 
   setAuthentication(data: boolean) {
-    sessionStorage.setItem('auth', data ? 'true' : 'false');
+    localStorage.setItem('auth', data ? 'true' : 'false');
     this.authSubject.next(data);
   }
 
   setRole(data: string) {
-    sessionStorage.setItem('role', data);
+    localStorage.setItem('role', data);
     this.role.next(data);
   }
 
   getRole(): Observable<string>{
-    this.role.next(sessionStorage.getItem('role'))
+    this.role.next(localStorage.getItem('role'))
     return this.role.asObservable();
+  }
+
+  getLocalStorageRole(){
+    return localStorage.getItem('role');
   }
 
   setLoggedUser(data: LoginResponse.ProfileData) {
@@ -38,16 +42,16 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    this.authSubject.next(sessionStorage.getItem('auth') == 'true') // Getting auth storen in session and storing in subject.
+    this.authSubject.next(localStorage.getItem('auth') == 'true') // Getting auth storen in session and storing in subject.
     return this.authSubject.asObservable();
   }
 
   getAuthSession() {
-    return sessionStorage.getItem('auth');
+    return localStorage.getItem('auth');
   }
 
   logout() {
-    sessionStorage.removeItem('auth');
+    localStorage.removeItem('auth');
     this.authSubject.next(false);
   }
 }

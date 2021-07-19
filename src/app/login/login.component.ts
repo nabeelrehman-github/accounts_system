@@ -57,6 +57,8 @@ export class LoginComponent implements OnInit {
 
             this.utilityService.setBranch(this.loggedUser.branchId);
             this.utilityService.setUsername(this.loggedUser.userName);
+            this.utilityService.setReceipt(false);
+            console.log(this.utilityService.getReceipt())
 
             this.router.navigate(['customer_invoice']);
           } else if (res.statusCode == StatusCode.AUTH_FAILURE){

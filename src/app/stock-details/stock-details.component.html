@@ -3,34 +3,34 @@
 </div>
 <hr>
 <div class="px-3 container">
-    <ng-select [(ngModel)]="selectedCompany" placeholder="Company" #selectCompany class="limit-feilds ">
-        <ng-option placeholder="Company " *ngFor="let company of companies " [value]="company.id ">
-            {{company.name}}</ng-option>
-    </ng-select>
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-bordered text-center text-center" id="mainProductTable">
             <thead class="table-head">
                 <tr>
                     <th style="width: 40px">#</th>
                     <th style="width: 150px" scope="col">Model</th>
-                    <th style="width: 80px" scope="col">In Stock Quantity</th>
-                    <th style="width: 110px" scope="col">Purchase Price</th>
-                    <th style="width: 90px" scope="col">Sales Price</th>
-                    <th style="width: 180px" scope="col">Last Date of Stock Entry</th>
-                    <th style="width: 100px"></th>
+                    <th style="width: 80px" scope="col">Quantity</th>
+                    <th style="width: 110px" scope="col">Sold</th>
+                    <th style="width: 90px" scope="col">Available</th>
+                    <th style="width: 90px" scope="col">Defetive</th>
+                    <th style="width: 180px" scope="col">Created At</th>
+                    <th style="width: 180px" scope="col">Branch Name</th>
+                    <!-- <th style="width: 100px"></th> -->
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of stockDetailList; let i = index">
+                <tr *ngFor="let item of inventoryDetails; let i = index">
                     <td class="font-weight-bold" scope="row">{{i + 1}}</td>
-                    <td>{{item.modelName}}</td>
-                    <td>{{item.inStockQuantity}}</td>
-                    <td>{{item.purchasePrice}}</td>
-                    <td>{{item.salesPrice}}</td>
-                    <td>{{item.lastStockEntry}}</td>
-                    <td class="update-entry">
-                        <button style="width: 100px" class="btn" (click)="updateEntry(item.entryId)">Update</button>
-                    </td>
+                    <td>{{item.productId}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.sold}}</td>
+                    <td>{{item.available}}</td>
+                    <td>{{item.defetive}}</td>
+                    <td>{{item.createdAt | date: 'd/M/yyyy'}}</td>
+                    <td>{{item.branchName}}</td>
+                    <!-- <td class="update-entry">
+                        <button style="width: 100px" class="btn" (click)="updateEntry(item.productId)">Update</button>
+                    </td> -->
                 </tr>
             </tbody>
         </table>

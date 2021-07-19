@@ -5,3 +5,7 @@
 .model-text {
     font-size: 1.2rem;
 }
+
+.profil-loss {
+    cursor: pointer;
+}

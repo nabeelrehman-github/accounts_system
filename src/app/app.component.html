@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav *ngIf="!isReceipt" class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid px-5">
         <a class="navbar-brand" (click)="logoRedirect()">Ramzan Battery Center</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,20 @@
                 <li *ngIf="isAuthenticated" class="nav-item">
                     <a class="nav-link" routerLinkActive="active" routerLink="supplier_invoice">Supplier Invoice</a>
                 </li>
-                <li *ngIf="isAuthenticated && (loggedUserRole == 'admin')" class="nav-item">
+
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="customer_record">Client Records</a>
+                </li>
+
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="invoice_summaries">Invoice Summaries</a>
+                </li>
+
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="add_expense">Add Expense</a>
+                </li>
+
+                <li *ngIf="isAuthenticated" class="nav-item">
                     <a class="nav-link" routerLinkActive="active" routerLink="stock_details">Stock Details</a>
                 </li>
 
@@ -21,8 +34,26 @@
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_stock_item">Update
-                                Stock</a></li>
+                        <li>
+                            <a class="dropdown-item" routerLinkActive="active" routerLink="add_product">Add Product</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLinkActive="active" routerLink="adjustment_payment">Adjust
+                                Payment</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item profil-loss" href="http://124.109.34.237:8083/retail_shop/report/profitloss/export">Profiy/Loss Report</a>
+                        </li>
+                        <!-- <li>
+                            <hr class="dropdown-divider">
+                        </li> -->
+                        <!-- <li>
+                            <a class="dropdown-item" routerLinkActive="active" routerLink="add_stock_item">Update
+                                Stock</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -31,8 +62,13 @@
                         </li>
                         <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_branch">Update
                                 Branch</a></li>
-                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_customer">Update
-                                Customer</a></li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="add_update_customers">Update
+                                Customer</a></li> -->
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="head_details">Heads Detail</a></li>
+                        <li><a class="dropdown-item" routerLinkActive="active" routerLink="expense_details">Expense Detail</a></li>
                     </ul>
                 </li>
             </ul>
@@ -44,7 +80,7 @@
 </nav>
 
 <div>
-    <div class="row" style="margin: 0">
+    <div [ngClass]="isReceipt ? '' : 'row'" style="margin: 0">
         <!-- <div *ngIf="isAuthenticated" class="col-2 p-0" id="sticky-sidebar">
             <div class="bg-dark-gray">
                 <div class="list-group">
@@ -58,7 +94,7 @@
                 </div>
             </div>
         </div> -->
-        <div class="col order-1 p-0" id="main">
+        <div [ngClass]="isReceipt ? '' : 'col order-1 p-0'" id="main">
             <router-outlet></router-outlet>
         </div>
     </div>
@@ -93,7 +129,7 @@
                 <h3 [ngClass]="textClass" class="modal-title">{{modalMessage}}</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> -->
-                <div class="col mt-3 mx-3">
+                <div class="col-1 mt-3 mx-3">
                     <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             </div>
@@ -103,7 +139,7 @@
 
 
 
-<footer>
+<footer *ngIf="!isReceipt">
     <div id="footer" class="py-5">
         <hr>
         <div class="container">

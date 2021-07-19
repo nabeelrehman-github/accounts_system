@@ -1,0 +1,32 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Head Details</h1>
+</div>
+<hr>
+<div class="px-3 container">
+    <div class="row">
+        <div *ngFor="let head of headsDetails1" class="col">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <b>{{head.headName}}</b>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Amount : {{head.headAmount | number}}</li>
+                    <li class="list-group-item">Created At : {{head.createdAt | date: 'd/M/yyyy'}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div *ngFor="let head of headsDetails2" class="col">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <b>{{head.headName}}</b>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Amount : {{head.headAmount | number}}</li>
+                    <li class="list-group-item">Created At : {{head.createdAt | date: 'd/M/yyyy'}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

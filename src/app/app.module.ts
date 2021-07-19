@@ -16,6 +16,17 @@ import { CommonModule } from '@angular/common';
 import { AddUpdateCompaniesComponent } from './add-update-companies/add-update-companies.component';
 import { AuthGuard } from './services/authentication/auth.guard';
 import { SupplierInvoiceComponent } from './supplier-invoice/supplier-invoice.component';
+import { AddUpdateCustomersComponent } from './add-update-customers/add-update-customers.component';
+import { AdjustPaymentComponent } from './adjust-payment/adjust-payment.component';
+import { CustomersRecordComponent } from './customers-record/customers-record.component';
+import { InvoiceSummariesComponent } from './invoice-summaries/invoice-summaries.component';
+import { ThermalPrintModule } from 'ng-thermal-print';
+import { InvoiceReceiptComponent } from './invoice-receipt/invoice-receipt.component';
+import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
+import { HeadsDetailComponent } from './heads-detail/heads-detail.component';
+import { AddUpdateExpenseComponent } from './add-update-expense/add-update-expense.component';
+import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
+import { AddProductComponent } from './add-product/add-product.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +38,16 @@ import { SupplierInvoiceComponent } from './supplier-invoice/supplier-invoice.co
     CustomerInvoiceComponent,
     AddUpdateCompaniesComponent,
     SupplierInvoiceComponent,
+    AddUpdateCustomersComponent,
+    AdjustPaymentComponent,
+    CustomersRecordComponent,
+    InvoiceSummariesComponent,
+    InvoiceReceiptComponent,
+    InvoiceDetailsComponent,
+    HeadsDetailComponent,
+    AddUpdateExpenseComponent,
+    ExpenseDetailsComponent,
+    AddProductComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +56,8 @@ import { SupplierInvoiceComponent } from './supplier-invoice/supplier-invoice.co
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgSelectModule
+    NgSelectModule,
+    ThermalPrintModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

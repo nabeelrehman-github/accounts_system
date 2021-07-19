@@ -1,0 +1,58 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Invoice Summaries</h1>
+</div>
+<hr>
+<div class="px-3 container">
+    <div class="row">
+        <div class="col-4">
+            <ng-select [(ngModel)]="selectedCustomerType" (change)="onCustomerTypeChange()" placeholder="Customer Type" #selectCustomer class="limit-feilds">
+                <ng-option *ngFor="let type of customerType " [value]="type.id ">
+                    {{type.value}}</ng-option>
+            </ng-select>
+        </div>
+        <div class="col-4">
+            <ng-select [(ngModel)]="selectedCustomer" (change)="onCustomerChange()" placeholder="Customer" #selectCustomer class="limit-feilds">
+                <ng-option *ngFor="let item of displayCustomers " [value]="item.id ">
+                    {{item.customerName}} - <span class="text-muted">{{item.phoneNumber}}</span></ng-option>
+            </ng-select>
+        </div>
+        <div class="col-4 p-0 mt-3">
+            <button class="btn btn-outline-dark m-0" (click)="fetchSummaries()">Load Invoices</button>
+        </div>
+
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-hover table-bordered text-center text-center" id="mainProductTable">
+                <thead class="table-head">
+                    <tr>
+                        <th style="width: 20px">#</th>
+                        <th style="width: 50px">Invoice Number</th>
+                        <th style="width: 150px">Customer Name</th>
+                        <th style="width: 50px">Payment Type</th>
+                        <th style="width: 90px">Misc Amount</th>
+                        <th style="width: 90px">Misc Details</th>
+                        <th style="width: 90px">Total Amount</th>
+                        <!-- <th style="width: 50px">Status</th> -->
+                        <th style="width: 90px">Branch Name</th>
+                        <th style="width: 100px">Created At</th>
+                        <th style="width: 100px">Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of summariesDetail; let i = index">
+                        <td style="width: 20px" class="font-weight-bold" scope="row">{{i + 1}}</td>
+                        <td style="width: 50px"><a [routerLink]="['details', item.id]">{{item.id}}</a></td>
+                        <td style="width: 150px">{{item.customerName | titlecase}}</td>
+                        <td style="width: 50px">{{item.paymentType}}</td>
+                        <td style="width: 90px">Rs {{item.miscAmount | number}}/-</td>
+                        <td style="width: 90px">{{item.miscDetails}}</td>
+                        <td style="width: 90px">Rs {{item.totalAmount | number}}/-</td>
+                        <!-- <td style="width: 50px">{{item.status}}</td> -->
+                        <td style="width: 90px">{{item.branchName}}</td>
+                        <td style="width: 100px">{{item.createdAt | date: 'd/M/yyyy, h:mm a'}}</td>
+                        <td style="width: 100px">{{item.updatedAt | date: 'd/M/yyyy, h:mm a'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

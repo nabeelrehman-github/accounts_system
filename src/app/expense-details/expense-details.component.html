@@ -1,0 +1,28 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Expense Details</h1>
+</div>
+<hr>
+<div class="px-3 container">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover table-bordered text-center text-center" id="mainProductTable">
+            <thead class="table-head">
+                <tr>
+                    <th style="width: 40px">#</th>
+                    <th style="width: 150px" scope="col">Expense Details</th>
+                    <th style="width: 80px" scope="col">Branch</th>
+                    <th style="width: 80px" scope="col">Amount</th>
+                    <th style="width: 80px" scope="col">Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of expenseDetails; let i = index">
+                    <td style="width: 40px" class="font-weight-bold" scope="row">{{i + 1}}</td>
+                    <td style="width: 150px">{{item.expenseDetails}}</td>
+                    <td style="width: 80px">{{item.branchName}}</td>
+                    <td style="width: 80px">Rs {{item.amount | number}}/-</td>
+                    <td style="width: 80px">{{item.createdAt | date: 'd/M/yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

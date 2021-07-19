@@ -3,6 +3,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { LoginResponse } from './models/response/login-response';
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { DataAccessService } from './services/data_access/data-access.service';
+import { UtilityService } from './services/utility.service';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,12 @@ export class AppComponent {
   isAuthenticated: boolean;
   loggedUser: LoginResponse.ProfileData;
   loggedUserRole: string;
-
+  isReceipt: boolean;
   constructor(
     private router: Router,
     private dataAccess: DataAccessService,
-    private authService: AuthenticationService) {
+    private authService: AuthenticationService,
+    private utilityService: UtilityService) {
 
     // handles login/logout button behaviour.
     this.router.events.subscribe((event) => {
@@ -30,15 +32,18 @@ export class AppComponent {
             if (res) {
               this.isAuthenticated = res;
             }
-          } 
+          }
         )
         this.authService.getRole().subscribe(
           res => {
             this.loggedUserRole = res;
           }
         )
+        this.isReceipt = this.utilityService.getReceipt()
       }
     });
+
+    this.isReceipt = this.utilityService.getReceipt();
 
     this.authService.getRole().subscribe(
       res => {
@@ -82,5 +87,18 @@ export class AppComponent {
       this.router.navigate(['invoice'])
     else
       this.router.navigate(['login'])
+  }
+
+  downloadReprot() {
+    // this.dataAccess.callProfitLossReport().subscribe(
+    //   data => this.downloadFile(data)
+    // );
+    window.location.href = 'http://124.109.34.237:8083/retail_shop/report/profitloss/export'
+  }
+
+  downloadFile(data) {
+    const blob = new Blob([data], { type: 'text/xlxs' });
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

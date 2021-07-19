@@ -1,0 +1,55 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Adjust Payment</h1>
+</div>
+<hr>
+<div class="mt-5 px-3 container">
+    <div class="row justify-content-center">
+        <div class="col-7">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label class="h6 m-0 p-0">Invoice Number</label>
+                            <div class="mt-2">
+                                <input [(ngModel)]="invoiceNumber" type="text" (change)="allowNumberOnly($event)" class="form-control limit-feilds">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="h6 mt-3 p-0">Amount</label>
+                            <div class="mt-2">
+                                <input [(ngModel)]="amount" type="text" (change)="allowNumberOnly($event)" class="form-control limit-feilds">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ng-select [(ngModel)]="selectedCustomerType" placeholder="Customer Type" class="mt-3">
+                                <ng-option *ngFor="let customer of customerType " [value]="customer.id ">
+                                    {{customer.name}}</ng-option>
+                            </ng-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ng-select [(ngModel)]="selectedAdjustmentType" placeholder="Adjustment Type" class="mt-3">
+                                <ng-option *ngFor="let type of adjustmentType " [value]="type.id ">
+                                    {{type.name}}</ng-option>
+                            </ng-select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-5 row justify-content-between">
+                <div class="col-3">
+                    <button class="btn btn-dark" (click)="adjust()">Adjust</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-outline-secondary" (click)="clearAll()">Clear</button>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+</div>

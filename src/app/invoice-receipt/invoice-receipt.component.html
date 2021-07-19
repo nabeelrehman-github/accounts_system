@@ -1,0 +1,80 @@
+<div class="ticket">
+    <p class="centered"><b>رمضان بیٹری سینٹر</b>
+        <br>
+        <span class="address"><b>مین سرکلر روڈ ، ڈیرہ اسماعیل خان</b></span>
+    </p>
+    <div class="row">
+        <div class="col offset-4 p-0">
+            <b>0333-3333436</b><span><b> : عمران</b></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col offset-4 p-0">
+            <b>0333-9987174</b><span><b> : مہران</b></span>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col offset-4 p-0">
+            <b class="miscInfo">Nabeel Rehman</b><span><b> : سیلزمین</b></span>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col offset-6 p-0">
+            <b class="miscInfo">Circular Road</b><span><b> : شاخ</b></span>
+        </div>
+    </div>
+    <hr>
+    <div class="row my-3">
+        <div class="col"><b>{{invoiceReceipt.date | date: 'dd/MM/yyyy'}}</b><span><b> :تاریخ</b></span></div>
+        <div class="col"><b>{{invoiceReceipt.invoiceNumber}}</b><span><b> :انوائس</b></span></div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="total"><b>کل</b></th>
+                <th class="price"><b>شرح</b></th>
+                <th class="description"><b>تفصیل</b></th>
+                <th class="quantity"><b>مقدار</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of invoiceReceipt.invoiceItem">
+                <td class="total"><b>{{item.total}}</b></td>
+                <td class="price"><b>{{item.rate}}</b></td>
+                <td class="description"><b>{{item.company}}<br>{{item.model}}</b></td>
+                <td class="quantity"><b>{{item.quantity}}</b></td>
+                <td>
+                    <hr>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <b>{{invoiceReceipt.miscCharges}}</b><span class="extras"><b> : تیزاب اور چارج</b></span>
+    <br>
+    <b>{{invoiceReceipt.totalBill}}</b><span class="extras"><b> : کل بل</b></span>
+
+    <br>
+    <b>
+        <hr>
+    </b>
+    <p class="centered"><b>آپ کی خریداری کے لئے آپ کا شکریہ</b></p>
+    <hr>
+    <p class="centered">&#9830;<b> ہدایات </b>&#9830;</p>
+    <hr>
+    <p class="info"><b>اوور چارج بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
+    <hr>
+    <p class="info"><b>جلی ہوئی ، ٹوٹی ہوئی اور پھولی ہوئی بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
+    <hr>
+    <p class="info"><b>پانی یا تیزاب خشک ہونے کی کوئی گارنٹی نہیں ہوگی</b></p>
+    <hr>
+    <p class="info"><b>بیٹری کا چارج کم ہونے کی صورت میں اضافی چارجز عائد ہوں گے</b></p>
+    <hr>
+    <p class="info"><b>یو پی ایس کے اوور چارجنگ کی وجہ سے جلی ہوئی پلیٹوں والی بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
+    <hr>
+    <p class="info"><b>قابل قبول کلیم والی نئ بیٹری کے چارجنگ اور تیزاب کے چارجز ہوں گے</b></p>
+    <hr>
+</div>
