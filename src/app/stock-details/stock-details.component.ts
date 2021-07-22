@@ -13,12 +13,17 @@ declare var $: any;
 export class StockDetailsComponent implements OnInit {
   selectedCompany!: number;
   inventoryDetails: InventoryDetailsData[] = [];
+  grandTotal: number = 0;
 
   constructor(private dataAccessService: DataAccessService, private router: Router) { 
     this.dataAccessService.callInventoryDetails().subscribe(
       res => {
         if(res.statusCode == StatusCode.SUCCESS_CODE){
           this.inventoryDetails = res.data.inventoryDetails;
+          
+          this.inventoryDetails.forEach(i => {
+            this.grandTotal += i.purchasePrice * i.quantity;
+          });
         }
       }
     )

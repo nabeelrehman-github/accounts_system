@@ -74,5 +74,19 @@ export class UtilityService {
   getCompanies(): CompaniesData[]{
     return JSON.parse(localStorage.getItem('companies'));
   }
-  
+
+  setProducts(data: ProductDetails.Companies[]){
+    localStorage.setItem('products', JSON.stringify(data))
+  }
+
+  getProducts(): ProductDetails.Companies[]{
+    return JSON.parse(localStorage.getItem('products'));
+  }
+
+  getUserFullName(){
+    return localStorage.getItem('userFullName')
+  }
+  setUserFullName(data: string){
+    localStorage.setItem('userFullName', data);
+  }
 }

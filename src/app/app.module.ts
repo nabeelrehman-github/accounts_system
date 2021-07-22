@@ -20,13 +20,13 @@ import { AddUpdateCustomersComponent } from './add-update-customers/add-update-c
 import { AdjustPaymentComponent } from './adjust-payment/adjust-payment.component';
 import { CustomersRecordComponent } from './customers-record/customers-record.component';
 import { InvoiceSummariesComponent } from './invoice-summaries/invoice-summaries.component';
-import { ThermalPrintModule } from 'ng-thermal-print';
 import { InvoiceReceiptComponent } from './invoice-receipt/invoice-receipt.component';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { HeadsDetailComponent } from './heads-detail/heads-detail.component';
 import { AddUpdateExpenseComponent } from './add-update-expense/add-update-expense.component';
 import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
 import { AddProductComponent } from './add-product/add-product.component';
+import { UpdateInventoryComponent } from './update-inventory/update-inventory.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,8 @@ import { AddProductComponent } from './add-product/add-product.component';
     HeadsDetailComponent,
     AddUpdateExpenseComponent,
     ExpenseDetailsComponent,
-    AddProductComponent
+    AddProductComponent,
+    UpdateInventoryComponent
   ],
   imports: [
     CommonModule,
@@ -56,8 +57,7 @@ import { AddProductComponent } from './add-product/add-product.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgSelectModule,
-    ThermalPrintModule
+    NgSelectModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

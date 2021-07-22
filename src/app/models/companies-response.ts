@@ -1,9 +1,11 @@
-export class CompanesResponse{
-    data: InBetweenParam[] = [];
+import { BaseResponse } from "./response/base-response";
+
+export class CompaniesResponse extends BaseResponse{
+    data: InBetweenParam;
 }
 
 export class InBetweenParam{
-    companiesDetails:CompaniesData
+    companiesDetails:CompaniesData[] = [];
 }
 
 export class CompaniesData{

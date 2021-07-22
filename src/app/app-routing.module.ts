@@ -20,6 +20,7 @@ import { AuthGuard } from './services/authentication/auth.guard';
 import { LoginRedirectionGuard } from './services/authentication/login-redirection.guard';
 import { StockDetailsComponent } from './stock-details/stock-details.component';
 import { SupplierInvoiceComponent } from './supplier-invoice/supplier-invoice.component';
+import { UpdateInventoryComponent } from './update-inventory/update-inventory.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [LoginRedirectionGuard]  },
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'expense_details', component: ExpenseDetailsComponent, canActivate:[AuthGuard, AdminRouteGuard]},
   { path: 'add_expense', component: AddUpdateExpenseComponent, canActivate:[AuthGuard]},
   { path: 'add_product', component: AddProductComponent, canActivate:[AuthGuard,  AdminRouteGuard]},
+  { path: 'update_inventory', component: UpdateInventoryComponent, canActivate:[AuthGuard]},
   { path: '**' , redirectTo: 'login' }
 ];
 

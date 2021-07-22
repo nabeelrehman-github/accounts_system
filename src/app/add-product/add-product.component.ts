@@ -15,8 +15,6 @@ export class AddProductComponent implements OnInit {
 
   selectedCompany: number;
   productId: string;
-  purchasePrice: number;
-  quantity: number;
   description: string;
 
   companies:CompaniesData[]  = []
@@ -30,15 +28,17 @@ export class AddProductComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clearAll(){}
+  clearAll(){
+    this.selectedCompany = null;
+    this.productId = null;
+    this.description = null;
+  }
 
   addProduct(){
-    if(this.quantity != null && this.selectedCompany != null && this.purchasePrice != null && this.description != null && this.productId != null && this.quantity > 0  && this.purchasePrice > 0 && this.description != '' && this.productId != ''){
+    if(this.selectedCompany != null && this.productId != null && this.productId != ''){
       this.addProductRequest.companyId = this.selectedCompany;
       this.addProductRequest.desc = this.description;
       this.addProductRequest.productId = this.productId;
-      this.addProductRequest.purchasePrice = this.purchasePrice;
-      this.addProductRequest.quantity = this.quantity;
 
       this.dataAccessService.callAddProduct(this.addProductRequest).subscribe(
         res => {

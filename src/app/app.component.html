@@ -29,11 +29,18 @@
                     <a class="nav-link" routerLinkActive="active" routerLink="stock_details">Stock Details</a>
                 </li>
 
+                <li *ngIf="isAuthenticated" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="update_inventory">Update Inventory</a>
+                </li>
+
                 <li *ngIf="isAuthenticated && (loggedUserRole == 'admin')" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <li>
+                            <a class="dropdown-item" routerLinkActive="active" routerLink="add_update_company">Add Companies</a>
+                        </li>
                         <li>
                             <a class="dropdown-item" routerLinkActive="active" routerLink="add_product">Add Product</a>
                         </li>

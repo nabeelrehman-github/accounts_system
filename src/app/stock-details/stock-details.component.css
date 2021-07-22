@@ -40,3 +40,12 @@ table {
     transition: all ease-in-out 0.3s;
     background-color: rgb(224, 224, 224);
 }
+
+.g-total {
+    font-size: 18px;
+}
+
+.total {
+    font-size: 17px;
+    background-color: rgb(230, 230, 230);
+}

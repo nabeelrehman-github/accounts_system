@@ -30,6 +30,7 @@ export class CustomerInvoiceComponent implements OnInit {
   selectedModel: number;
   selectedPayment: number;
   selectedCustomer: number;
+  isPriceInvalid: boolean = false;
 
   newCustomerName: string;
   newCustomerNumber: string;
@@ -39,6 +40,10 @@ export class CustomerInvoiceComponent implements OnInit {
   netTotal: number = 0;
   subtotal: number = 0;
   total: number = 0;
+  discount: number = 0;
+  paymentReceived: number = 0;
+  balanceReturned: number = 0;
+  isBalanceReturned: boolean = false;
 
   prefetchData: PrefetchResponseData = new PrefetchResponseData();
   companies: ProductDetails.Companies[];
@@ -52,26 +57,31 @@ export class CustomerInvoiceComponent implements OnInit {
     public dataAccess: DataAccessService,
     private router: Router,
     private utilityService: UtilityService) {
+
     this.dataAccess.callPrefetchData().subscribe(
       res => {
         if (res.statusCode == StatusCode.SUCCESS_CODE) {
           this.prefetchData = res.data;
-          this.utilityService.setCustomerDetails(res.data.customers);
+          this.utilityService.setCustomerDetails(res.data.customers); // Cache Logged User.
 
+          // Filter customerType i.e Customer or Supplier
           this.customerType = this.prefetchData.customers.filter(i => {
             return (i.customerType == 1);
           })
 
-          let companiesFetch: CompaniesData[] = []
+          let cacheCompanies: CompaniesData[] = []
+
+          // Cache Companies.
           res.data.products.forEach(item => {
             let fetchCompany: CompaniesData = new CompaniesData();
             fetchCompany.companyName = item.companyName;
             fetchCompany.id = item.id;
-            companiesFetch.push(fetchCompany);
+            cacheCompanies.push(fetchCompany);
           })
+          this.utilityService.setCompanies(cacheCompanies);
 
-          console.log(companiesFetch)
-          this.utilityService.setCompanies(companiesFetch);
+          // Cache Products
+          this.utilityService.setProducts(res.data.products);
         }
         else {
           this.dataAccess.setModal("Server not working, try again later.", "danger");
@@ -87,7 +97,7 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   addToList() {
-    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "") {
+    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "" && !this.isPriceInvalid) {
       let item: InvoiceItem = new InvoiceItem();
 
       this.prefetchData.products.forEach((i) => {
@@ -152,19 +162,23 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   calculateSummary() {
-    if (!(this.miscCharges === null) && this.miscCharges <= 0)
+    if ((!(this.miscCharges === null) && this.miscCharges <= 0) && (!(this.discount === null) && this.discount <= 0)) {
       this.miscCharges = 0;
+      this.discount = 0;
+    }
     this.subtotal = 0;
 
     this.itemList.forEach((i) => {
       this.subtotal += i.subtotal;
     })
 
+    this.subtotal = Number(this.subtotal) + ((Number(this.miscCharges) === null || Number(this.miscCharges) == 0) ? 0 : Number(this.miscCharges))
+
     this.netTotal = this.subtotal;
 
     if (this.subtotal > 0) {
-      this.subtotal = Number(this.subtotal) + ((Number(this.miscCharges) === null || Number(this.miscCharges) == 0) ? 0 : Number(this.miscCharges));
       this.total = this.subtotal;
+      this.total = Number(this.total) - ((Number(this.discount) === null || Number(this.discount) == 0) ? 0 : Number(this.discount))
     }
     else this.total = 0
 
@@ -176,11 +190,12 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   confirmPurchase() {
-    if (this.itemList.length > 0 && this.selectedPayment != null) {
+    if (this.itemList.length > 0 && this.selectedPayment != null && this.isBalanceReturned) {
       this.calculateSummary(); // Calculate Total.
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
-
+      this.invoiceRequest.discountAmount = this.discount;
+      
       // Select customer from drop down.
       if (this.selectedCustomer != null) {
         this.invoiceRequest.customerId = this.selectedCustomer;
@@ -215,8 +230,21 @@ export class CustomerInvoiceComponent implements OnInit {
             this.invoiceReceipt.invoiceNumber = res.data.invoiceNumber;
             this.invoiceReceipt.date = Date.now().toString();
             this.invoiceReceipt.miscCharges = this.miscCharges;
-            this.invoiceReceipt.totalBill = this.total
-            console.log(this.invoiceReceipt.totalBill);
+            this.invoiceReceipt.totalBill = this.total;
+            this.invoiceReceipt.paymentReceived = this.paymentReceived;
+            this.invoiceReceipt.balanceReturned = this.balanceReturned;
+            this.invoiceReceipt.discount = this.discount;
+
+            // Select customer from drop down.
+            if (this.selectedCustomer != null) {
+              this.invoiceReceipt.customerName = this.customerType.find(i => i.id == this.selectedCustomer).customerName
+            } else { // Select customer from input feilds.
+              this.invoiceReceipt.customerName = this.newCustomerName;
+            }
+
+            this.invoiceReceipt.branchName = 'Main Branch';
+            this.invoiceReceipt.salesmanName = this.utilityService.getUserFullName();
+
             this.itemList.forEach(item => {
               let invoiceReceiptItem: InvoiceReceiptItem = new InvoiceReceiptItem();
               invoiceReceiptItem.company = item.company;
@@ -239,11 +267,28 @@ export class CustomerInvoiceComponent implements OnInit {
           }
         }
       );
+    } else {
+      this.dataAccess.setModal("Some Fields Missing", "danger");
+      $("#info-model").modal("toggle");
     }
   }
 
   onChangeCompany() {
     this.models = this.prefetchData.products.find(i => i.id == this.selectedCompany).models
+  }
+
+  checkPriceAvailability() {
+    if ((this.price < this.models.find(i => i.id == this.selectedModel).minSalePrice) || (this.price > this.models.find(i => i.id == this.selectedModel).maxSalePrice))
+      this.isPriceInvalid = true;
+    else
+      this.isPriceInvalid = false;
+  }
+
+  calculateReturn() {
+    if (!(this.paymentReceived === null) && this.paymentReceived > 0) {
+      this.balanceReturned = this.paymentReceived - this.total;
+      this.isBalanceReturned = true;
+    }
   }
 
   // validateFields(event: any) {

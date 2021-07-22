@@ -26,6 +26,8 @@ export namespace ProductDetails {
     export class Models {
         id: number;
         value: string;
+        minSalePrice: number;
+        maxSalePrice: number;
     }
 }
 

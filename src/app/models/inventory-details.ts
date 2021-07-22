@@ -16,4 +16,7 @@ export class InventoryDetailsData{
     defetive: number;
     createdAt: string;
     branchName: string;
+    purchasePrice: number;
+    description: number;
+    companyName: string;
 }

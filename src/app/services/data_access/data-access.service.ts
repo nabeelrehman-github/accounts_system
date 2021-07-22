@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { AddCompanyRequest } from 'src/app/models/add-company-request';
 import { AddExpenseRequest } from 'src/app/models/add-expense-request';
 import { AddProductRequest } from 'src/app/models/add-product-request';
 import { AddUpdateEntry } from 'src/app/models/add-update-entry';
 import { AdjustAmountRequest } from 'src/app/models/adjust-amount-request';
+import { CompaniesResponse } from 'src/app/models/companies-response';
 import { CustomerRecordResponse } from 'src/app/models/customer-record-response';
 import { ExpenseDetailsResponse } from 'src/app/models/expense-details-response';
 import { HeadDetailsResponse } from 'src/app/models/head-details-response';
@@ -19,6 +21,7 @@ import { LoginRequest } from 'src/app/models/login/login-request';
 import { PrefetchResponse } from 'src/app/models/prefetch-response';
 import { BaseResponse } from 'src/app/models/response/base-response';
 import { LoginResponse } from 'src/app/models/response/login-response';
+import { UpdateInventoryRequest } from 'src/app/models/update-inventory-request';
 import { UtilityService } from '../utility.service';
 
 
@@ -29,7 +32,8 @@ import { UtilityService } from '../utility.service';
 
 export class DataAccessService {
 
-  private BASE_URL = 'http://142.11.243.145:8083/retail_shop/';
+  // private BASE_URL = 'http://142.11.243.145:8083/retail_shop/'; // PROD
+  private BASE_URL = 'http://124.109.34.237:8083/retail_shop/'; // STAG
 
   private API_AUTHENTICATE = this.BASE_URL + 'user/authenticate';
   private API_SAVE_SELLER_INVOICE = this.BASE_URL + 'invoice/seller/save';
@@ -44,7 +48,9 @@ export class DataAccessService {
   private API_EXPENSE_DETAILS = this.BASE_URL + 'expense/get';
   private API_EXPENSE_ADD = this.BASE_URL + 'expense/add';
   private API_PRODUCT_ADD = this.BASE_URL + 'product/add';
-
+  private API_COMPANY_ADD = this.BASE_URL + 'companies/add';
+  private API_INVENTORY_UPDATE = this.BASE_URL + 'inventory/update';
+  
   private modalMessageSubject = new Subject<string>();
   private modalTypeSubject = new Subject<string>();
   private defaultEntry: AddUpdateEntry = { isUpdate: false, entryId: -1, companyName: '', modelName: '', purchasePrice: -1, salesPrice: -1, alreadyInStock: -1, venderName: '' };
@@ -170,9 +176,23 @@ export class DataAccessService {
     return this.http.post<BaseResponse>(this.API_PRODUCT_ADD, request, { headers: this.headers });
   }
 
-  // callGetCompanies(){
-    
-  // }
+  callAddCompanies(request: AddCompanyRequest){
+    this.headers = new HttpHeaders({
+      'branchId': this.utilityService.getBranch().toString(),
+      'userName': this.utilityService.getUsername()
+    });
+
+    return this.http.post<CompaniesResponse>(this.API_COMPANY_ADD, request, { headers: this.headers });
+  }
+
+  callUpdateInventory(request: UpdateInventoryRequest){
+    this.headers = new HttpHeaders({
+      'branchId': this.utilityService.getBranch().toString(),
+      'userName': this.utilityService.getUsername()
+    });
+
+    return this.http.post<BaseResponse>(this.API_INVENTORY_UPDATE, request, { headers: this.headers });
+  }
 
   // receiptPrefetch():Observable<ReceiptResponseModels.ReceiptResponse>{
   //   return this.http.get<ReceiptResponseModels.ReceiptResponse>

@@ -12,7 +12,7 @@
                         <div class="invoice-d1">
                             <div class="small text-muted fw-bolder">From</div>
                             <div class="h4 fw-bolder">Ramzan Battery Center</div>
-                            <div class="small text-muted fw-bolder">Circular Road, Dera Ismail Khan</div>
+                            <div class="small text-muted fw-bolder">Islamia High School No. 2 (North) Shumali Circular Road, D.I.Khan</div>
                         </div>
                     </div>
                     <div class="col">
@@ -73,13 +73,23 @@
                                 {{model.value}}</ng-option>
                         </ng-select>
 
-                        <span>Price</span>
-                        <input [(ngModel)]="price" (keypress)="allowNumberOnly($event)" class="form-control mt-3 mb-4" type="text" #selectedPrice>
-
                         <span>Quantity</span>
-                        <input [(ngModel)]="quantity" (keypress)="allowNumberOnly($event)" class="form-control mt-3" type="text" #selectedQuantity>
+                        <input [(ngModel)]="quantity" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedQuantity>
+
+                        <span>Price</span>
+                        <input [(ngModel)]="price" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedPrice>
+
+                        <span>Discount</span>
+                        <input [(ngModel)]="discount" (change)="calculateSummary()" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedDsic>
+
+                        <span>Minimum Sale Price</span>
+                        <input [(ngModel)]="minSalePrice" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedDsic>
+
+                        <span>Maximum Sale Price</span>
+                        <input [(ngModel)]="maxSalePrice" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedDsic>
 
                         <hr>
+
                         <span>Acid and Charging</span>
                         <input [(ngModel)]="miscCharges" (keypress)="allowNumberOnly($event)" class="form-control mt-3" type="text">
 

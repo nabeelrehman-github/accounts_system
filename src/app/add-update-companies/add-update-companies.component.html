@@ -16,7 +16,7 @@
                 </tbody>
             </table>
             <div class="mt-5 ">
-                <button class="btn btn-dark ">{{isUpdate ? 'Update' : 'Add'}}</button>
+                <button class="btn btn-dark " (click)="addCompany()">{{isUpdate ? 'Update' : 'Add'}}</button>
                 <button class="btn btn-secondary mx-5" (click)="clear()">Clear</button>
             </div>
         </div>
@@ -30,10 +30,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let company of companies; let i = index" (click)="getRow(company.id, company.name)">
+                        <tr *ngFor="let company of companies; let i = index">
                             <td class="fw-bold" scope="row">{{i + 1}}</td>
-                            <td>{{company.name}}</td>
+                            <td>{{company.companyName}}</td>
                         </tr>
+                        <!-- <tr *ngFor="let company of companies; let i = index" (click)="getRow(company.id, company.companyName)">
+                            <td class="fw-bold" scope="row">{{i + 1}}</td>
+                            <td>{{company.companyName}}</td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

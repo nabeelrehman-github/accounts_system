@@ -5,4 +5,6 @@ export class InvoiceItem {
     quantity!: number;
     rate!: number;
     subtotal!: number;
+    maxSalePrice!: number;
+    minSalePrice!: number;
 }

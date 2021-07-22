@@ -2,37 +2,56 @@
     <h1 class="display-6 mt-3">Stock Details</h1>
 </div>
 <hr>
-<div class="px-3 container">
+<div class="px-3">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover table-bordered text-center text-center" id="mainProductTable">
             <thead class="table-head">
                 <tr>
                     <th style="width: 40px">#</th>
+                    <th style="width: 120px" scope="col">Company</th>
                     <th style="width: 150px" scope="col">Model</th>
+                    <th style="width: 200px" scope="col">Description</th>
+                    <th style="width: 120px" scope="col">Purchase </th>
                     <th style="width: 80px" scope="col">Quantity</th>
                     <th style="width: 110px" scope="col">Sold</th>
                     <th style="width: 90px" scope="col">Available</th>
                     <th style="width: 90px" scope="col">Defetive</th>
-                    <th style="width: 180px" scope="col">Created At</th>
-                    <th style="width: 180px" scope="col">Branch Name</th>
+                    <th style="width: 150px" scope="col">Branch Name</th>
+                    <th style="width: 150px" scope="col">Created At</th>
+                    <th style="width: 120px" scope="col">Total Cost</th>
                     <!-- <th style="width: 100px"></th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of inventoryDetails; let i = index">
                     <td class="font-weight-bold" scope="row">{{i + 1}}</td>
+                    <td>{{item.companyName}}</td>
                     <td>{{item.productId}}</td>
+                    <td>{{item.description}}</td>
+                    <td>Rs {{item.purchasePrice | number}}/-</td>
                     <td>{{item.quantity}}</td>
                     <td>{{item.sold}}</td>
                     <td>{{item.available}}</td>
                     <td>{{item.defetive}}</td>
-                    <td>{{item.createdAt | date: 'd/M/yyyy'}}</td>
                     <td>{{item.branchName}}</td>
+                    <td>{{item.createdAt | date: 'd/M/yyyy'}}</td>
+                    <td>Rs {{item.quantity * item.purchasePrice | number}}/-</td>
+
                     <!-- <td class="update-entry">
                         <button style="width: 100px" class="btn" (click)="updateEntry(item.productId)">Update</button>
                     </td> -->
                 </tr>
+                <tr>
+                    <td colspan="10"></td>
+                    <td class="text-center total"><b>Grand Total</b></td>
+                    <td class="total">Rs {{grandTotal | number}}/-</td>
+                </tr>
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <div class="col g-total">
+            <span> </span>
+        </div>
     </div>
 </div>

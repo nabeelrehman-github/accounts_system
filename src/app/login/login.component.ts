@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
 
             this.utilityService.setBranch(this.loggedUser.branchId);
             this.utilityService.setUsername(this.loggedUser.userName);
+            this.utilityService.setUserFullName(res.data.firstName + ' ' + res.data.lastName);
             this.utilityService.setReceipt(false);
             console.log(this.utilityService.getReceipt())
 

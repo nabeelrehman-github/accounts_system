@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { InvoiceReceipt, InvoiceReceiptItem } from '../models/invoice-receipt';
-import { InvoiceItemRequest, SaveInvoiceRequest } from '../models/invoice-request';
+import { InvoiceItemRequest } from '../models/save-supplier-invoice-request';
 import { InvoiceItem } from '../models/InvoiceItem';
 import { Customers, PrefetchResponseData, ProductDetails } from '../models/prefetch-response';
+import { SaveSupplierInvoiceRequest } from '../models/save-supplier-invoice-request';
 import { StatusCode } from '../models/status-codes';
 import { DataAccessService } from '../services/data_access/data-access.service';
 import { UtilityService } from '../services/utility.service';
@@ -17,7 +18,7 @@ declare var $: any;
 export class SupplierInvoiceComponent implements OnInit {
   invoiceReceipt: InvoiceReceipt = new InvoiceReceipt();
 
-  invoiceRequest: SaveInvoiceRequest = new SaveInvoiceRequest();
+  invoiceRequest: SaveSupplierInvoiceRequest = new SaveSupplierInvoiceRequest();
   invoiceDate: number = Date.now();
 
   allowSubmit: boolean = false;
@@ -36,6 +37,9 @@ export class SupplierInvoiceComponent implements OnInit {
   netTotal: number = 0;
   subtotal: number = 0;
   total: number = 0;
+  discount: number = 0;
+  minSalePrice = 0;
+  maxSalePrice = 0;
 
   prefetchData: PrefetchResponseData = new PrefetchResponseData();
   companies: ProductDetails.Companies[];
@@ -74,7 +78,7 @@ export class SupplierInvoiceComponent implements OnInit {
   }
 
   addToList() {
-    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "") {
+    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "" && this.selectedPayment != null && this.minSalePrice > 0 && this.maxSalePrice > 0) {
       let item: InvoiceItem = new InvoiceItem();
 
       this.prefetchData.products.forEach((i) => {
@@ -92,6 +96,9 @@ export class SupplierInvoiceComponent implements OnInit {
           item.subtotal = this.price * this.quantity;
         } else return;
       });
+
+      item.maxSalePrice = this.maxSalePrice;
+      item.minSalePrice = this.minSalePrice;
 
       item.quantity = this.quantity;
       this.itemList.push(item);
@@ -142,26 +149,30 @@ export class SupplierInvoiceComponent implements OnInit {
   }
 
   calculateSummary() {
-    if (!(this.miscCharges === null) && this.miscCharges <= 0)
+    if ((!(this.miscCharges === null) && this.miscCharges <= 0) && (!(this.discount === null) && this.discount <= 0)) {
       this.miscCharges = 0;
+      this.discount = 0;
+    }
     this.subtotal = 0;
 
     this.itemList.forEach((i) => {
       this.subtotal += i.subtotal;
     })
 
+    this.subtotal = Number(this.subtotal) + ((Number(this.miscCharges) === null || Number(this.miscCharges) == 0) ? 0 : Number(this.miscCharges))
+
     this.netTotal = this.subtotal;
 
     if (this.subtotal > 0) {
-      this.subtotal = Number(this.subtotal) + ((Number(this.miscCharges) === null || Number(this.miscCharges) == 0) ? 0 : Number(this.miscCharges));
       this.total = this.subtotal;
+      this.total = Number(this.total) - ((Number(this.discount) === null || Number(this.discount) == 0) ? 0 : Number(this.discount))
     }
     else this.total = 0
 
   }
 
   confirmPurchase() {
-    if (this.itemList.length > 0 && this.selectedPayment != null) {
+    if (this.itemList.length > 0 && this.selectedPayment != null && this.minSalePrice > 0 && this.maxSalePrice > 0) {
       this.calculateSummary(); // Calculate Total.
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
@@ -183,6 +194,8 @@ export class SupplierInvoiceComponent implements OnInit {
       this.itemList.forEach(item => {
         let invoiceRequestItem: InvoiceItemRequest = new InvoiceItemRequest();
 
+        invoiceRequestItem.maxSalePrice = item.maxSalePrice;
+        invoiceRequestItem.minSalePrice = item.minSalePrice;
         invoiceRequestItem.companyId = item.companyId;
         invoiceRequestItem.price = item.rate;
         invoiceRequestItem.productId = item.model;
@@ -214,9 +227,9 @@ export class SupplierInvoiceComponent implements OnInit {
             });
 
             this.utilityService.setInvoiceReceipt(this.invoiceReceipt);
-          // console.log(this.invoiceReceipt)
-          // console.log(this.utilityService.getInvoiceReceipt())
-            
+            // console.log(this.invoiceReceipt)
+            // console.log(this.utilityService.getInvoiceReceipt())
+
             // Show Modal
             this.dataAccess.setModal("Purchase Successful", "success");
             $("#info-model").modal("toggle");

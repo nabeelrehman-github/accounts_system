@@ -4,6 +4,12 @@ export class InvoiceReceipt{
     invoiceItem: InvoiceReceiptItem[] = [];
     miscCharges: number;
     totalBill: number;
+    discount: number;
+    paymentReceived: number;
+    balanceReturned: number;
+    salesmanName: string;
+    branchName: string;
+    customerName: string;
 }
 
 export class InvoiceReceiptItem{

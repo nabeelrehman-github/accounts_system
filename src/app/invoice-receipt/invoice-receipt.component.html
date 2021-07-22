@@ -1,80 +1,85 @@
 <div class="ticket">
-    <p class="centered"><b>رمضان بیٹری سینٹر</b>
-        <br>
-        <span class="address"><b>مین سرکلر روڈ ، ڈیرہ اسماعیل خان</b></span>
-    </p>
-    <div class="row">
-        <div class="col offset-4 p-0">
-            <b>0333-3333436</b><span><b> : عمران</b></span>
-        </div>
+    <div class="row justify-content-between">
+        <div class="logo col-3 fw-bolder">RBC</div>
+        <div class="col logo-side-text">Ramzan Battery Center</div>
     </div>
     <div class="row">
-        <div class="col offset-4 p-0">
-            <b>0333-9987174</b><span><b> : مہران</b></span>
+        <div class="col text-center mt-1">Islamia High School No. 2 (North) Shumali Circular Road, D.I.Khan</div>
+    </div>
+    <div class="row phone-number text-light">
+        <div class="col text-center">Ph # 0966-712054</div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col-1"></div>
+        <div class="col-11 mt-2 mb-0">
+            <img src="/assets/barcode.png" height="60px" width="240px">
         </div>
     </div>
-    <hr>
     <div class="row">
-        <div class="col offset-4 p-0">
-            <b class="miscInfo">Nabeel Rehman</b><span><b> : سیلزمین</b></span>
+        <div class="col">Bill # {{invoiceReceipt.invoiceNumber}}</div>
+        <div class="col">{{invoiceReceipt.date | date: 'dd/MM/yyyy h:mm a'}}</div>
+    </div>
+    <hr class="my-1 p-0">
+    <div class="row">
+        <div class="col">C. By: {{invoiceReceipt.salesmanName}}</div>
+        <div class="col-4">{{invoiceReceipt.branchName}}</div>
+    </div>
+    <div class="row">
+        <div class="col">M/s: {{invoiceReceipt.customerName}}</div>
+    </div>
+    <hr class="my-1 p-0">
+    <div class="row item-list-head">
+        <div class="col-4">Item Name</div>
+        <div class="col-1 text-center">Qty</div>
+        <div class="col-3 text-center">Price</div>
+        <div class="col-4 text-end">Amount</div>
+    </div>
+    <hr class="my-1 p-0">
+    <div *ngFor="let item of invoiceReceipt.invoiceItem" class="div item-list">
+        <div class="row">
+            <div class="col-4">{{item.company}}<br>{{item.model}}</div>
+            <div class="col-1 text-center">{{item.quantity}}</div>
+            <div class="col-3 text-center">{{item.rate}}</div>
+            <div class="col-4 text-end">{{item.total}}</div>
         </div>
+        <hr class="my-1 p-0">
     </div>
-    <div class="row mt-2">
-        <div class="col offset-6 p-0">
-            <b class="miscInfo">Circular Road</b><span><b> : شاخ</b></span>
-        </div>
+    <div class="row">
+        <div class="col-4">Total: {{invoiceReceipt.invoiceItem.length}}</div>
+        <div class="col-1 text-center">{{totalQuantity}}</div>
+        <div class="col-3 text-center"></div>
+        <div class="col-4 text-end">{{invoiceReceipt.totalBill}}</div>
     </div>
-    <hr>
-    <div class="row my-3">
-        <div class="col"><b>{{invoiceReceipt.date | date: 'dd/MM/yyyy'}}</b><span><b> :تاریخ</b></span></div>
-        <div class="col"><b>{{invoiceReceipt.invoiceNumber}}</b><span><b> :انوائس</b></span></div>
+    <hr class="my-1 p-0">
+    <div class="row justify-content-end">
+        <div class="col-8 text-end">Acid and Charging: </div>
+        <div class="col-4 text-end">{{invoiceReceipt.miscCharges}}</div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th class="total"><b>کل</b></th>
-                <th class="price"><b>شرح</b></th>
-                <th class="description"><b>تفصیل</b></th>
-                <th class="quantity"><b>مقدار</b></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of invoiceReceipt.invoiceItem">
-                <td class="total"><b>{{item.total}}</b></td>
-                <td class="price"><b>{{item.rate}}</b></td>
-                <td class="description"><b>{{item.company}}<br>{{item.model}}</b></td>
-                <td class="quantity"><b>{{item.quantity}}</b></td>
-                <td>
-                    <hr>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <hr>
-
-    <b>{{invoiceReceipt.miscCharges}}</b><span class="extras"><b> : تیزاب اور چارج</b></span>
-    <br>
-    <b>{{invoiceReceipt.totalBill}}</b><span class="extras"><b> : کل بل</b></span>
-
-    <br>
-    <b>
-        <hr>
-    </b>
-    <p class="centered"><b>آپ کی خریداری کے لئے آپ کا شکریہ</b></p>
-    <hr>
-    <p class="centered">&#9830;<b> ہدایات </b>&#9830;</p>
-    <hr>
-    <p class="info"><b>اوور چارج بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
-    <hr>
-    <p class="info"><b>جلی ہوئی ، ٹوٹی ہوئی اور پھولی ہوئی بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
-    <hr>
-    <p class="info"><b>پانی یا تیزاب خشک ہونے کی کوئی گارنٹی نہیں ہوگی</b></p>
-    <hr>
-    <p class="info"><b>بیٹری کا چارج کم ہونے کی صورت میں اضافی چارجز عائد ہوں گے</b></p>
-    <hr>
-    <p class="info"><b>یو پی ایس کے اوور چارجنگ کی وجہ سے جلی ہوئی پلیٹوں والی بیٹری کی کوئی گارنٹی نہیں ہوگی</b></p>
-    <hr>
-    <p class="info"><b>قابل قبول کلیم والی نئ بیٹری کے چارجنگ اور تیزاب کے چارجز ہوں گے</b></p>
-    <hr>
+    <div class="row justify-content-end">
+        <div class="col-8 text-end">Discount: </div>
+        <div class="col-4 text-end">{{invoiceReceipt.discount}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-8 text-end">Net Total: </div>
+        <div class="col-4 text-end">{{invoiceReceipt.totalBill}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-8 text-end">Payment Received: </div>
+        <div class="col-4 text-end">{{invoiceReceipt.paymentReceived}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-8 text-end">Balance Returned To Cust: </div>
+        <div class="col-4 text-end">{{invoiceReceipt.balanceReturned}}</div>
+    </div>
+    <hr class="my-1 p-0">
+    <div class="row">
+        <div class="col text-center">Thank You for visiting us.</div>
+    </div>
+    <hr class="my-1 p-0">
+    <!-- <div class="row">
+        <div class="col text-muted text-center">Software Developed By: <i>Fast</i> Tech Solutions &reg;</div>
+    </div>
+    <div class="row">
+        <div class="col text-muted text-center">www.ftsolutions.com.pk</div>
+    </div> -->
 </div>

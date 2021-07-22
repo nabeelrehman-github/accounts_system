@@ -1,4 +1,4 @@
-export class SaveInvoiceRequest {
+export class SaveSupplierInvoiceRequest {
     amount!: number;
     customerId!: number;
     misc_amount!: number;
@@ -15,4 +15,6 @@ export class InvoiceItemRequest {
     productId!: string;
     quantity!: number;
     price!: number;
+    minSalePrice!: number;
+    maxSalePrice!: number;
 }
