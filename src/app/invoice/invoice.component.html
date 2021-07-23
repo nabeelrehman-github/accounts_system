@@ -73,10 +73,10 @@
                             <ng-option placeholder="Model" *ngFor="let model of models" [value]="model.id">
                                 {{model.value}}</ng-option>
                         </ng-select>
-
+                         
                         <span>Quantity</span>
                         <input [(ngModel)]="quantity" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedQuantity>
-
+                         
                         <span>Price<small *ngIf="isPriceInvalid" class="text-danger"> * Invalid Price</small></span>
                         <input [(ngModel)]="price" (change)="checkPriceAvailability()" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedPrice>
 
@@ -122,8 +122,8 @@
                                         <th>Model</th>
                                         <th>Qty</th>
                                         <th>Rate</th>
-                                        <th>Subtotal</th>
-                                        <th style="width: 70px;">Remove</th>
+                                        <th>Sub Total</th>
+                                        <th  >Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody>
