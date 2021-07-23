@@ -93,7 +93,7 @@ export class AppComponent {
     // this.dataAccess.callProfitLossReport().subscribe(
     //   data => this.downloadFile(data)
     // );
-    window.location.href = 'http://124.109.34.237:8083/retail_shop/report/profitloss/export'
+    window.location.href = this.dataAccess.BASE_URL+'report/profitloss/export'
   }
 
   downloadFile(data) {

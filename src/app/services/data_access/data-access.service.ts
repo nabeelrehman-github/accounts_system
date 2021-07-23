@@ -32,8 +32,8 @@ import { UtilityService } from '../utility.service';
 
 export class DataAccessService {
 
-  // private BASE_URL = 'http://142.11.243.145:8083/retail_shop/'; // PROD
-  private BASE_URL = 'http://124.109.34.237:8083/retail_shop/'; // STAG
+   BASE_URL = 'http://142.11.243.145:8083/retail_shop/'; // PROD
+  //  BASE_URL = 'http://124.109.34.237:8083/retail_shop/'; // STAG
 
   private API_AUTHENTICATE = this.BASE_URL + 'user/authenticate';
   private API_SAVE_SELLER_INVOICE = this.BASE_URL + 'invoice/seller/save';
