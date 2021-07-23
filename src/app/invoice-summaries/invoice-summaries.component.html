@@ -30,6 +30,8 @@
                         <th style="width: 50px">Payment Type</th>
                         <th style="width: 90px">Misc Amount</th>
                         <th style="width: 90px">Misc Details</th>
+                        <th style="width: 90px">Discount</th>
+                        <th style="width: 90px">Discount Percentage</th>
                         <th style="width: 90px">Total Amount</th>
                         <!-- <th style="width: 50px">Status</th> -->
                         <th style="width: 90px">Branch Name</th>
@@ -45,6 +47,8 @@
                         <td style="width: 50px">{{item.paymentType}}</td>
                         <td style="width: 90px">Rs {{item.miscAmount | number}}/-</td>
                         <td style="width: 90px">{{item.miscDetails}}</td>
+                        <td style="width: 90px">{{item.discountAmount}}</td>
+                        <td style="width: 90px">{{item.discountPercentage}}</td>
                         <td style="width: 90px">Rs {{item.totalAmount | number}}/-</td>
                         <!-- <td style="width: 50px">{{item.status}}</td> -->
                         <td style="width: 90px">{{item.branchName}}</td>

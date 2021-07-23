@@ -19,4 +19,6 @@ export class InvoiceSummariesData{
     status: string;
     createdAt: string;
     updatedAt: string;
+    discountPercentage: string;
+    discountAmount: number;
 }

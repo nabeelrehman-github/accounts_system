@@ -44,6 +44,8 @@ export class CustomerInvoiceComponent implements OnInit {
   paymentReceived: number = 0;
   balanceReturned: number = 0;
   isBalanceReturned: boolean = false;
+  minSalePrice: number = -1;
+  maxSalePrice: number;
 
   prefetchData: PrefetchResponseData = new PrefetchResponseData();
   companies: ProductDetails.Companies[];
@@ -129,6 +131,8 @@ export class CustomerInvoiceComponent implements OnInit {
     this.selectedModel = null;
     this.quantity = null;
     this.price = null;
+    this.minSalePrice = -1;
+    this.maxSalePrice = -1
   }
 
   allowNumberOnly(event: any): boolean {
@@ -190,7 +194,7 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   confirmPurchase() {
-    if (this.itemList.length > 0 && this.selectedPayment != null && this.isBalanceReturned) {
+    if (this.itemList.length > 0 && this.selectedPayment != null) {
       this.calculateSummary(); // Calculate Total.
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
@@ -275,6 +279,11 @@ export class CustomerInvoiceComponent implements OnInit {
 
   onChangeCompany() {
     this.models = this.prefetchData.products.find(i => i.id == this.selectedCompany).models
+  }
+
+  onModelChange(){
+    this.minSalePrice = this.models.find(i => i.id == this.selectedModel).minSalePrice;
+    this.maxSalePrice = this.models.find(i => i.id == this.selectedModel).maxSalePrice;
   }
 
   checkPriceAvailability() {

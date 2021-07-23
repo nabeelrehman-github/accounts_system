@@ -8,6 +8,8 @@ import { SaveSupplierInvoiceRequest } from '../models/save-supplier-invoice-requ
 import { StatusCode } from '../models/status-codes';
 import { DataAccessService } from '../services/data_access/data-access.service';
 import { UtilityService } from '../services/utility.service';
+import { CompaniesData } from '../models/companies-response';
+import { SaveInvoiceRequest } from '../models/invoice-request';
 declare var $: any;
 
 @Component({
@@ -18,7 +20,7 @@ declare var $: any;
 export class SupplierInvoiceComponent implements OnInit {
   invoiceReceipt: InvoiceReceipt = new InvoiceReceipt();
 
-  invoiceRequest: SaveSupplierInvoiceRequest = new SaveSupplierInvoiceRequest();
+  invoiceRequest: SaveInvoiceRequest = new SaveInvoiceRequest();
   invoiceDate: number = Date.now();
 
   allowSubmit: boolean = false;
@@ -28,6 +30,7 @@ export class SupplierInvoiceComponent implements OnInit {
   selectedModel: number;
   selectedPayment: number;
   selectedCustomer: number;
+  isPriceInvalid: boolean = false;
 
   newSupplierName: string;
   newSupplierNumber: string;
@@ -38,8 +41,11 @@ export class SupplierInvoiceComponent implements OnInit {
   subtotal: number = 0;
   total: number = 0;
   discount: number = 0;
-  minSalePrice = 0;
-  maxSalePrice = 0;
+  paymentReceived: number = 0;
+  balanceReturned: number = 0;
+  isBalanceReturned: boolean = false;
+  maxSalePrice: number;
+  minSalePrice: number;
 
   prefetchData: PrefetchResponseData = new PrefetchResponseData();
   companies: ProductDetails.Companies[];
@@ -53,16 +59,31 @@ export class SupplierInvoiceComponent implements OnInit {
     public dataAccess: DataAccessService,
     private router: Router,
     private utilityService: UtilityService) {
+
     this.dataAccess.callPrefetchData().subscribe(
       res => {
         if (res.statusCode == StatusCode.SUCCESS_CODE) {
           this.prefetchData = res.data;
+          this.utilityService.setCustomerDetails(res.data.customers); // Cache Logged User.
 
-          this.utilityService.setCustomerDetails(res.data.customers);
-
+          // Filter customerType i.e Customer or Supplier
           this.customerType = this.prefetchData.customers.filter(i => {
-            return (i.customerType == 2);
+            return (i.customerType == 1);
           })
+
+          let cacheCompanies: CompaniesData[] = []
+
+          // Cache Companies.
+          res.data.products.forEach(item => {
+            let fetchCompany: CompaniesData = new CompaniesData();
+            fetchCompany.companyName = item.companyName;
+            fetchCompany.id = item.id;
+            cacheCompanies.push(fetchCompany);
+          })
+          this.utilityService.setCompanies(cacheCompanies);
+
+          // Cache Products
+          this.utilityService.setProducts(res.data.products);
         }
         else {
           this.dataAccess.setModal("Server not working, try again later.", "danger");
@@ -78,7 +99,7 @@ export class SupplierInvoiceComponent implements OnInit {
   }
 
   addToList() {
-    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "" && this.selectedPayment != null && this.minSalePrice > 0 && this.maxSalePrice > 0) {
+    if (this.selectedCompany != null && this.selectedModel != null && this.quantity != null && this.quantity.toString().trim().replace(" ", "") != "" && !this.isPriceInvalid) {
       let item: InvoiceItem = new InvoiceItem();
 
       this.prefetchData.products.forEach((i) => {
@@ -97,14 +118,8 @@ export class SupplierInvoiceComponent implements OnInit {
         } else return;
       });
 
-      item.maxSalePrice = this.maxSalePrice;
-      item.minSalePrice = this.minSalePrice;
-
       item.quantity = this.quantity;
       this.itemList.push(item);
-
-      console.log(this.selectedModel)
-
 
       this.calculateSummary()
       this.clearFields();
@@ -171,12 +186,18 @@ export class SupplierInvoiceComponent implements OnInit {
 
   }
 
+  generateInvoice() {
+    this.utilityService.setReceipt(true);
+    this.router.navigate(['invoice_receipt'])
+  }
+
   confirmPurchase() {
-    if (this.itemList.length > 0 && this.selectedPayment != null && this.minSalePrice > 0 && this.maxSalePrice > 0) {
+    if (this.itemList.length > 0 && this.selectedPayment != null) {
       this.calculateSummary(); // Calculate Total.
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
-
+      this.invoiceRequest.discountAmount = this.discount;
+      
       // Select customer from drop down.
       if (this.selectedCustomer != null) {
         this.invoiceRequest.customerId = this.selectedCustomer;
@@ -194,8 +215,6 @@ export class SupplierInvoiceComponent implements OnInit {
       this.itemList.forEach(item => {
         let invoiceRequestItem: InvoiceItemRequest = new InvoiceItemRequest();
 
-        invoiceRequestItem.maxSalePrice = item.maxSalePrice;
-        invoiceRequestItem.minSalePrice = item.minSalePrice;
         invoiceRequestItem.companyId = item.companyId;
         invoiceRequestItem.price = item.rate;
         invoiceRequestItem.productId = item.model;
@@ -213,7 +232,20 @@ export class SupplierInvoiceComponent implements OnInit {
             this.invoiceReceipt.invoiceNumber = res.data.invoiceNumber;
             this.invoiceReceipt.date = Date.now().toString();
             this.invoiceReceipt.miscCharges = this.miscCharges;
-            this.invoiceReceipt.totalBill = this.total
+            this.invoiceReceipt.totalBill = this.total;
+            this.invoiceReceipt.paymentReceived = this.paymentReceived;
+            this.invoiceReceipt.balanceReturned = this.balanceReturned;
+            this.invoiceReceipt.discount = this.discount;
+
+            // Select customer from drop down.
+            if (this.selectedCustomer != null) {
+              this.invoiceReceipt.customerName = this.customerType.find(i => i.id == this.selectedCustomer).customerName
+            } else { // Select customer from input feilds.
+              this.invoiceReceipt.customerName = this.newSupplierName;
+            }
+
+            this.invoiceReceipt.branchName = 'Main Branch';
+            this.invoiceReceipt.salesmanName = this.utilityService.getUserFullName();
 
             this.itemList.forEach(item => {
               let invoiceReceiptItem: InvoiceReceiptItem = new InvoiceReceiptItem();
@@ -227,8 +259,6 @@ export class SupplierInvoiceComponent implements OnInit {
             });
 
             this.utilityService.setInvoiceReceipt(this.invoiceReceipt);
-            // console.log(this.invoiceReceipt)
-            // console.log(this.utilityService.getInvoiceReceipt())
 
             // Show Modal
             this.dataAccess.setModal("Purchase Successful", "success");
@@ -239,11 +269,28 @@ export class SupplierInvoiceComponent implements OnInit {
           }
         }
       );
+    } else {
+      this.dataAccess.setModal("Some Fields Missing", "danger");
+      $("#info-model").modal("toggle");
     }
   }
 
   onChangeCompany() {
     this.models = this.prefetchData.products.find(i => i.id == this.selectedCompany).models
+  }
+
+  checkPriceAvailability() {
+    if ((this.price < this.models.find(i => i.id == this.selectedModel).minSalePrice) || (this.price > this.models.find(i => i.id == this.selectedModel).maxSalePrice))
+      this.isPriceInvalid = true;
+    else
+      this.isPriceInvalid = false;
+  }
+
+  calculateReturn() {
+    if (!(this.paymentReceived === null) && this.paymentReceived > 0) {
+      this.balanceReturned = this.paymentReceived - this.total;
+      this.isBalanceReturned = true;
+    }
   }
 
   // validateFields(event: any) {
