@@ -12,7 +12,7 @@ import { SalesWindowComponent } from './sales-window/sales-window.component';
 import { CustomerInvoiceComponent } from './invoice/invoice.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AddUpdateCompaniesComponent } from './add-update-companies/add-update-companies.component';
 import { AuthGuard } from './services/authentication/auth.guard';
 import { SupplierInvoiceComponent } from './supplier-invoice/supplier-invoice.component';
@@ -27,6 +27,7 @@ import { AddUpdateExpenseComponent } from './add-update-expense/add-update-expen
 import { ExpenseDetailsComponent } from './expense-details/expense-details.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { UpdateInventoryComponent } from './update-inventory/update-inventory.component';
+import { LedgerReportComponent } from './ledger-report/ledger-report.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UpdateInventoryComponent } from './update-inventory/update-inventory.co
     AddUpdateExpenseComponent,
     ExpenseDetailsComponent,
     AddProductComponent,
-    UpdateInventoryComponent
+    UpdateInventoryComponent,
+    LedgerReportComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,7 @@ import { UpdateInventoryComponent } from './update-inventory/update-inventory.co
     HttpClientModule,
     NgSelectModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

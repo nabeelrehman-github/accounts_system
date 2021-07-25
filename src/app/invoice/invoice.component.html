@@ -73,10 +73,10 @@
                             <ng-option placeholder="Model" *ngFor="let model of models" [value]="model.id">
                                 {{model.value}}</ng-option>
                         </ng-select>
-                         
+
                         <span>Quantity</span>
                         <input [(ngModel)]="quantity" (keypress)="allowNumberOnly($event)" class="form-control my-3" type="text" #selectedQuantity>
-                         
+
                         <span>Price<small *ngIf="isPriceInvalid" class="text-danger"> * Invalid Price</small></span>
                         <input [(ngModel)]="price" (change)="checkPriceAvailability()" (keypress)="allowNumberOnly($event)" class="form-control my-3 mb-0" type="text" #selectedPrice>
 
@@ -121,7 +121,7 @@
 
                         <div class="mt-3">
                             <button class="btn btn-success btn-generate-invoice" (click)="confirmPurchase()">Confirm
-                                Purchase</button>
+                                Sale</button>
                         </div>
                     </div>
                     <!-- Invoice Details Table -->
@@ -136,7 +136,7 @@
                                         <th>Qty</th>
                                         <th>Rate</th>
                                         <th>Sub Total</th>
-                                        <th  >Remove</th>
+                                        <th>Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody>

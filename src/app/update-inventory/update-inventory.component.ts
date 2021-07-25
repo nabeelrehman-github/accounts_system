@@ -77,7 +77,14 @@ export class UpdateInventoryComponent implements OnInit {
           if (res.statusCode == StatusCode.SUCCESS_CODE) {
             this.dataAccessService.setModal("Update Successful", "success");
             $("#info-model").modal("toggle");
+          }else{
+            this.dataAccessService.setModal(res.statusDesc, "success");
+            $("#info-model").modal("toggle");
           }
+        },
+        error => {
+          this.dataAccessService.setModal(error, "success");
+            $("#info-model").modal("toggle");
         }
       );
     }

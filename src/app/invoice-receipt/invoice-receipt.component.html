@@ -4,9 +4,9 @@
         <div class="col logo-side-text">Ramzan Battery Center</div>
     </div>
     <div class="row">
-        <div style="font-family:verdana;font-size:10px" class="col text-center mt-1">Islamia High School No. 2 (North) Shumali Circular Road, D.I.Khan</div>
+        <div class="col text-center mt-1">Islamia High School No. 2 (North) Shumali Circular Road, D.I.Khan</div>
     </div>
-    <div class="row phone-number text-light" style="font-family:verdana;font-size:10px">
+    <div class="row phone-number text-light">
         <div class="col text-center">Ph # 0966-712054</div>
     </div>
     <div class="row justify-content-between">
@@ -18,19 +18,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col" style="font-family:verdana;font-size:10px">Bill # {{invoiceReceipt.invoiceNumber}}</div>
-        <div class="col" style="font-family:verdana;font-size:10px">{{invoiceReceipt.date | date: 'dd/MM/yyyy h:mm a'}}</div>
+        <div class="col-4">Bill # {{invoiceReceipt.invoiceNumber}}</div>
+        <div class="col-8 date-time">{{invoiceReceipt.date | date: 'dd/MM/yyyy h:mm a'}}</div>
     </div>
     <hr class="my-1 p-0">
     <div class="row">
-        <div class="col" style="font-family:verdana;font-size:10px">C. By: {{invoiceReceipt.salesmanName}}</div>
-        <div class="col-4" style="font-family:verdana;font-size:10px">{{invoiceReceipt.branchName}}</div>
+        <div class="col">C. By: {{invoiceReceipt.salesmanName}}</div>
+        <div class="col-4">{{invoiceReceipt.branchName}}</div>
     </div>
     <div class="row">
-        <div class="col" style="font-family:verdana;font-size:10px">M/s: {{invoiceReceipt.customerName}}</div>
+        <div class="col">M/s: {{invoiceReceipt.customerName}}</div>
     </div>
     <hr class="my-1 p-0">
-    <div class="row item-list-head" style="font-family:verdana;font-size:10px">
+    <div class="row item-list-head">
         <div class="col-4">Item Name</div>
         <div class="col-1 text-center">Qty</div>
         <div class="col-3 text-center">Price</div>
@@ -38,44 +38,44 @@
     </div>
     <hr class="my-1 p-0">
     <div *ngFor="let item of invoiceReceipt.invoiceItem" class="div item-list">
-        <div class="row" style="font-family:verdana;font-size:10px">
+        <div class="row">
             <div class="col-4">{{item.company}}<br>{{item.model}}</div>
             <div class="col-1 text-center">{{item.quantity}}</div>
-            <div class="col-3 text-center">{{item.rate}}</div>
-            <div class="col-4 text-end">{{item.total}}</div>
+            <div class="col-3 text-center">{{item.rate | number}}</div>
+            <div class="col-4 text-end">{{item.total | number}}</div>
         </div>
         <hr class="my-1 p-0">
     </div>
-    <div class="row" style="font-family:verdana;font-size:10px">
-        <div class="col-4" style="font-family:verdana;font-size:10px">Total: {{invoiceReceipt.invoiceItem.length}}</div>
-        <div class="col-1 text-center" style="font-family:verdana;font-size:10px">{{totalQuantity}}</div>
-        <div class="col-3 text-center" style="font-family:verdana;font-size:10px"></div>
-        <div class="col-4 text-end" style="font-family:verdana;font-size:10px">{{invoiceReceipt.totalBill}}</div>
+    <div class="row">
+        <div class="col-4">Total: {{invoiceReceipt.invoiceItem.length}}</div>
+        <div class="col-1 text-center">{{totalQuantity | number}}</div>
+        <div class="col-3 text-center"></div>
+        <div class="col-4 text-end">{{netTotal | number}}</div>
     </div>
     <hr class="my-1 p-0">
-    <div class="row justify-content-end" style="font-family:verdana;font-size:10px">
+    <div class="row justify-content-end">
         <div class="col-8 text-end">Acid and Charging: </div>
-        <div class="col-4 text-end">{{invoiceReceipt.miscCharges}}</div>
+        <div class="col-4 text-end">{{invoiceReceipt.miscCharges | number}}</div>
     </div>
-    <div class="row justify-content-end" style="font-family:verdana;font-size:10px">
+    <div class="row justify-content-end">
         <div class="col-8 text-end">Discount: </div>
-        <div class="col-4 text-end">{{invoiceReceipt.discount}}</div>
+        <div class="col-4 text-end">{{invoiceReceipt.discount | number}}</div>
     </div>
-    <div class="row justify-content-end" style="font-family:verdana;font-size:10px">
+    <div class="row justify-content-end">
         <div class="col-8 text-end">Net Total: </div>
-        <div class="col-4 text-end">{{invoiceReceipt.totalBill}}</div>
+        <div class="col-4 text-end">{{invoiceReceipt.totalBill | number}}</div>
     </div>
-    <div class="row justify-content-end" style="font-family:verdana;font-size:10px">
+    <div class="row justify-content-end">
         <div class="col-8 text-end">Payment Received: </div>
-        <div class="col-4 text-end">{{invoiceReceipt.paymentReceived}}</div>
+        <div class="col-4 text-end">{{invoiceReceipt.paymentReceived | number}}</div>
     </div>
-    <div class="row justify-content-end" style="font-family:verdana;font-size:10px">
+    <div class="row justify-content-end">
         <div class="col-8 text-end">Balance Returned To Cust: </div>
-        <div class="col-4 text-end">{{invoiceReceipt.balanceReturned}}</div>
+        <div class="col-4 text-end">{{invoiceReceipt.balanceReturned | number}}</div>
     </div>
     <hr class="my-1 p-0">
     <div class="row">
-        <div class="col text-center" style="font-family:verdana;font-size:10px">Thank You for visiting us.</div>
+        <div class="col text-center">Thank You for visiting us.</div>
     </div>
     <hr class="my-1 p-0">
     <!-- <div class="row">

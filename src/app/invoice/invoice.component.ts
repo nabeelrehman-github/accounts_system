@@ -84,6 +84,9 @@ export class CustomerInvoiceComponent implements OnInit {
 
           // Cache Products
           this.utilityService.setProducts(res.data.products);
+          
+          // Cache Customers.
+          this.utilityService.setCustomers(res.data.customers);
         }
         else {
           this.dataAccess.setModal("Server not working, try again later.", "danger");
@@ -199,7 +202,7 @@ export class CustomerInvoiceComponent implements OnInit {
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
       this.invoiceRequest.discountAmount = this.discount;
-      
+
       // Select customer from drop down.
       if (this.selectedCustomer != null) {
         this.invoiceRequest.customerId = this.selectedCustomer;
@@ -263,11 +266,15 @@ export class CustomerInvoiceComponent implements OnInit {
             this.utilityService.setInvoiceReceipt(this.invoiceReceipt);
 
             // Show Modal
-            this.dataAccess.setModal("Purchase Successful", "success");
+            this.dataAccess.setModal("Sale Successful", "success");
             $("#info-model").modal("toggle");
 
             this.utilityService.setReceipt(true);
             this.router.navigate(['invoice_receipt']);
+          } else {
+            // Show Modal
+            this.dataAccess.setModal(res.statusDesc, "danger");
+            $("#info-model").modal("toggle");
           }
         }
       );
@@ -278,10 +285,10 @@ export class CustomerInvoiceComponent implements OnInit {
   }
 
   onChangeCompany() {
-    this.models = this.prefetchData.products.find(i => i.id == this.selectedCompany).models
+    this.models = this.prefetchData.products.find(i => i.id == this.selectedCompany).models.filter(j => j.quantity > 0);
   }
 
-  onModelChange(){
+  onModelChange() {
     this.minSalePrice = this.models.find(i => i.id == this.selectedModel).minSalePrice;
     this.maxSalePrice = this.models.find(i => i.id == this.selectedModel).maxSalePrice;
   }

@@ -1,3 +1,4 @@
+import { JsonpClientBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CompaniesData } from '../models/companies-response';
@@ -86,7 +87,16 @@ export class UtilityService {
   getUserFullName(){
     return localStorage.getItem('userFullName')
   }
+
   setUserFullName(data: string){
     localStorage.setItem('userFullName', data);
+  }
+
+  getCustomers(): Customers[]{
+    return JSON.parse(localStorage.getItem('customersList'));
+  }
+
+  setCustomers(data: Customers[]){
+    localStorage.setItem('customersList', JSON.stringify(data));
   }
 }

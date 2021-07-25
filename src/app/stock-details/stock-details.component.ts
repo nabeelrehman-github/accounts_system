@@ -22,7 +22,7 @@ export class StockDetailsComponent implements OnInit {
           this.inventoryDetails = res.data.inventoryDetails;
           
           this.inventoryDetails.forEach(i => {
-            this.grandTotal += i.purchasePrice * i.quantity;
+            this.grandTotal += i.purchasePrice * i.available;
           });
         }
       }

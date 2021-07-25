@@ -28,6 +28,7 @@ export namespace ProductDetails {
         value: string;
         minSalePrice: number;
         maxSalePrice: number;
+        quantity: number;
     }
 }
 

@@ -1,6 +1,5 @@
 * {
-    font-size: 25px;
-    font-family: Tahoma;
+    font-size: 18px;
 }
 
 .logo {
@@ -27,4 +26,8 @@
 
 .phone-number {
     background-color: black;
+}
+
+.date-time {
+    font-size: 18px;
 }

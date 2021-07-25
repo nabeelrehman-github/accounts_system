@@ -32,8 +32,8 @@ import { UtilityService } from '../utility.service';
 
 export class DataAccessService {
 
-  //  BASE_URL = 'http://142.11.243.145:8083/retail_shop/'; // PROD
-   BASE_URL = 'http://124.109.34.237:8083/retail_shop/'; // STAG
+   BASE_URL = 'http://142.11.243.145:8083/retail_shop/'; // PROD
+  // BASE_URL = 'http://124.109.34.237:8083/retail_shop/'; // STAG
 
   private API_AUTHENTICATE = this.BASE_URL + 'user/authenticate';
   private API_SAVE_SELLER_INVOICE = this.BASE_URL + 'invoice/seller/save';
@@ -50,7 +50,8 @@ export class DataAccessService {
   private API_PRODUCT_ADD = this.BASE_URL + 'product/add';
   private API_COMPANY_ADD = this.BASE_URL + 'companies/add';
   private API_INVENTORY_UPDATE = this.BASE_URL + 'inventory/update';
-  
+  private API_DOWNLOAD_LEDGER = this.BASE_URL + 'report/ledger/export';
+
   private modalMessageSubject = new Subject<string>();
   private modalTypeSubject = new Subject<string>();
   private defaultEntry: AddUpdateEntry = { isUpdate: false, entryId: -1, companyName: '', modelName: '', purchasePrice: -1, salesPrice: -1, alreadyInStock: -1, venderName: '' };
@@ -122,7 +123,7 @@ export class DataAccessService {
     return this.http.post<InvoiceSummariesResponse>(this.API_INVOICE_SUMMARIES, request, { headers: this.headers });
   }
 
-  callInvoiceSummaryDetails(request: InvoiceDetailsRequest){
+  callInvoiceSummaryDetails(request: InvoiceDetailsRequest) {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -131,7 +132,7 @@ export class DataAccessService {
     return this.http.post<InvoiceSummaryDetailsResponse>(this.API_INVOICE_DETAILS, request, { headers: this.headers });
   }
 
-  callInventoryDetails(){
+  callInventoryDetails() {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -140,7 +141,7 @@ export class DataAccessService {
     return this.http.post<InventoryDetailsResponse>(this.API_INVENTORY_DETAILS, null, { headers: this.headers });
   }
 
-  callMainHeadsDetails(){
+  callMainHeadsDetails() {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -149,7 +150,7 @@ export class DataAccessService {
     return this.http.post<HeadDetailsResponse>(this.API_HEAD_DETAILS, null, { headers: this.headers });
   }
 
-  callExpenseDetails(){
+  callExpenseDetails() {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -158,7 +159,7 @@ export class DataAccessService {
     return this.http.post<ExpenseDetailsResponse>(this.API_EXPENSE_DETAILS, null, { headers: this.headers });
   }
 
-  callAddExpense(request: AddExpenseRequest){
+  callAddExpense(request: AddExpenseRequest) {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -167,7 +168,7 @@ export class DataAccessService {
     return this.http.post<BaseResponse>(this.API_EXPENSE_ADD, request, { headers: this.headers });
   }
 
-  callAddProduct(request: AddProductRequest){
+  callAddProduct(request: AddProductRequest) {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -176,7 +177,7 @@ export class DataAccessService {
     return this.http.post<BaseResponse>(this.API_PRODUCT_ADD, request, { headers: this.headers });
   }
 
-  callAddCompanies(request: AddCompanyRequest){
+  callAddCompanies(request: AddCompanyRequest) {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
@@ -185,13 +186,21 @@ export class DataAccessService {
     return this.http.post<CompaniesResponse>(this.API_COMPANY_ADD, request, { headers: this.headers });
   }
 
-  callUpdateInventory(request: UpdateInventoryRequest){
+  callUpdateInventory(request: UpdateInventoryRequest) {
     this.headers = new HttpHeaders({
       'branchId': this.utilityService.getBranch().toString(),
       'userName': this.utilityService.getUsername()
     });
 
     return this.http.post<BaseResponse>(this.API_INVENTORY_UPDATE, request, { headers: this.headers });
+  }
+
+  callDownloadLedgerReport(customerId, fromDate, toDate) {
+    let branchId = this.utilityService.getBranch().toString();
+    let username = this.utilityService.getUsername();
+    this.API_DOWNLOAD_LEDGER = this.BASE_URL + 'report/ledger/export?branchId=' + branchId + '&customerId=' + customerId + '&fromDate=' + fromDate + '&toDate=' + toDate + '&userName=' + username;
+
+    window.open(this.API_DOWNLOAD_LEDGER);
   }
 
   // receiptPrefetch():Observable<ReceiptResponseModels.ReceiptResponse>{

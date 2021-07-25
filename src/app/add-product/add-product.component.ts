@@ -17,36 +17,43 @@ export class AddProductComponent implements OnInit {
   productId: string;
   description: string;
 
-  companies:CompaniesData[]  = []
+  companies: CompaniesData[] = []
 
   addProductRequest: AddProductRequest = new AddProductRequest();
 
-  constructor(private dataAccessService: DataAccessService, private utilityService: UtilityService) { 
+  constructor(private dataAccessService: DataAccessService, private utilityService: UtilityService) {
     this.companies = this.utilityService.getCompanies();
   }
 
   ngOnInit(): void {
   }
 
-  clearAll(){
+  clearAll() {
     this.selectedCompany = null;
     this.productId = null;
     this.description = null;
   }
 
-  addProduct(){
-    if(this.selectedCompany != null && this.productId != null && this.productId != ''){
+  addProduct() {
+    if (this.selectedCompany != null && this.productId != null && this.productId != '') {
       this.addProductRequest.companyId = this.selectedCompany;
       this.addProductRequest.desc = this.description;
       this.addProductRequest.productId = this.productId;
 
       this.dataAccessService.callAddProduct(this.addProductRequest).subscribe(
         res => {
-          if(res.statusCode == StatusCode.SUCCESS_CODE){
+          if (res.statusCode == StatusCode.SUCCESS_CODE) {
             // Show Modal
             this.dataAccessService.setModal("Successful", "success");
             $("#info-model").modal("toggle");
+          } else {
+            this.dataAccessService.setModal(res.statusDesc, "success");
+            $("#info-model").modal("toggle");
           }
+        },
+        error => {
+          this.dataAccessService.setModal(error, "success");
+          $("#info-model").modal("toggle");
         }
       );
 

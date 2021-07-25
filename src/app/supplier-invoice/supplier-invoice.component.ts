@@ -20,7 +20,7 @@ declare var $: any;
 export class SupplierInvoiceComponent implements OnInit {
   invoiceReceipt: InvoiceReceipt = new InvoiceReceipt();
 
-  invoiceRequest: SaveInvoiceRequest = new SaveInvoiceRequest();
+  invoiceRequest: SaveSupplierInvoiceRequest = new SaveSupplierInvoiceRequest();
   invoiceDate: number = Date.now();
 
   allowSubmit: boolean = false;
@@ -68,7 +68,7 @@ export class SupplierInvoiceComponent implements OnInit {
 
           // Filter customerType i.e Customer or Supplier
           this.customerType = this.prefetchData.customers.filter(i => {
-            return (i.customerType == 1);
+            return (i.customerType == 2);
           })
 
           let cacheCompanies: CompaniesData[] = []
@@ -84,6 +84,9 @@ export class SupplierInvoiceComponent implements OnInit {
 
           // Cache Products
           this.utilityService.setProducts(res.data.products);
+
+          // Cache Customers.
+          this.utilityService.setCustomers(res.data.customers);
         }
         else {
           this.dataAccess.setModal("Server not working, try again later.", "danger");
@@ -115,6 +118,8 @@ export class SupplierInvoiceComponent implements OnInit {
           item.rate = this.price;
 
           item.subtotal = this.price * this.quantity;
+          item.maxSalePrice = this.maxSalePrice;
+          item.minSalePrice = this.minSalePrice;
         } else return;
       });
 
@@ -197,7 +202,7 @@ export class SupplierInvoiceComponent implements OnInit {
       this.invoiceRequest.amount = this.total; // Subtotal.
       this.invoiceRequest.paymentType = this.selectedPayment; // Selected Payment Type.
       this.invoiceRequest.discountAmount = this.discount;
-      
+
       // Select customer from drop down.
       if (this.selectedCustomer != null) {
         this.invoiceRequest.customerId = this.selectedCustomer;
@@ -219,6 +224,8 @@ export class SupplierInvoiceComponent implements OnInit {
         invoiceRequestItem.price = item.rate;
         invoiceRequestItem.productId = item.model;
         invoiceRequestItem.quantity = item.quantity;
+        invoiceRequestItem.minSalePrice = item.minSalePrice;
+        invoiceRequestItem.maxSalePrice = item.maxSalePrice;
 
         invoiceRequestItemList.push(invoiceRequestItem);
       });
@@ -266,6 +273,10 @@ export class SupplierInvoiceComponent implements OnInit {
 
             this.utilityService.setReceipt(true);
             this.router.navigate(['invoice_receipt']);
+          } else {
+            // Show Modal
+            this.dataAccess.setModal(res.statusDesc, "danger");
+            $("#info-model").modal("toggle");
           }
         }
       );

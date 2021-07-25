@@ -54,9 +54,16 @@ export class AddUpdateExpenseComponent implements OnInit {
       this.dataAccessService.callAddExpense(this.addExpenseRequest).subscribe(
         res => {
           if(res.statusCode == StatusCode.SUCCESS_CODE){
-            this.dataAccessService.setModal("Purchase Successful", "success");
+            this.dataAccessService.setModal("Successful", "success");
+            $("#info-model").modal("toggle");
+          }else{
+            this.dataAccessService.setModal(res.statusDesc, "success");
             $("#info-model").modal("toggle");
           }
+        },
+        error => {
+          this.dataAccessService.setModal(error, "success");
+            $("#info-model").modal("toggle");
         }
       )
     }

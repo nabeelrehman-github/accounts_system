@@ -14,6 +14,7 @@ import { InvoiceDetailsComponent } from './invoice-details/invoice-details.compo
 import { InvoiceReceiptComponent } from './invoice-receipt/invoice-receipt.component';
 import { InvoiceSummariesComponent } from './invoice-summaries/invoice-summaries.component';
 import { CustomerInvoiceComponent } from './invoice/invoice.component';
+import { LedgerReportComponent } from './ledger-report/ledger-report.component';
 import { LoginComponent } from './login/login.component';
 import { SalesWindowComponent } from './sales-window/sales-window.component';
 import { AuthGuard } from './services/authentication/auth.guard';
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'expense_details', component: ExpenseDetailsComponent, canActivate:[AuthGuard, AdminRouteGuard]},
   { path: 'add_expense', component: AddUpdateExpenseComponent, canActivate:[AuthGuard]},
   { path: 'add_product', component: AddProductComponent, canActivate:[AuthGuard,  AdminRouteGuard]},
+  { path: 'ledger_reports', component: LedgerReportComponent, canActivate:[AuthGuard,  AdminRouteGuard]},
   { path: 'update_inventory', component: UpdateInventoryComponent, canActivate:[AuthGuard]},
   { path: '**' , redirectTo: 'login' }
 ];

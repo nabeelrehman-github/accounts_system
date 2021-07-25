@@ -1,0 +1,48 @@
+<div class="jumbotron text-center">
+    <h1 class="display-6 mt-3">Ledger Reports</h1>
+</div>
+<hr>
+<div class="mt-5 px-3 container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <ng-select [(ngModel)]="selectedCustomerType" placeholder="Customer Type" (change)="onCustomerTypeChange()">
+                <ng-option *ngFor="let customer of customerType" [value]="customer.id">
+                    {{customer.value}}
+                </ng-option>
+            </ng-select>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <ng-select [(ngModel)]="selectedCustomer" placeholder="Customer">
+                <ng-option *ngFor="let customer of displayCustomers" [value]="customer.id">
+                    {{customer.customerName}} - <span class="text-muted">{{customer.phoneNumber}}</span>
+                </ng-option>
+            </ng-select>
+        </div>
+    </div>
+    <div class="mt-3 row justify-content-center">
+        <div class="col-4">
+            <span>Date From:</span><br>
+            <input [(ngModel)]="dateFrom" class="mt-2 date-picker" type="date" (change)="formatFromDate()">
+            <br>
+            <span><b>{{dateFrom}}</b></span>
+        </div>
+    </div>
+    <div class="mt-3 row justify-content-center">
+        <div class="col-4">
+            <span>Date To:</span><br>
+            <input [(ngModel)]="dateTo" class="mt-2 date-picker" type="date" (change)="formatToDate()">
+            <br>
+            <span><b>{{dateTo}}</b></span>
+        </div>
+    </div>
+    <div class="mt-5 row justify-content-center">
+        <div class="col-2">
+            <button class="btn btn-dark" (click)="downloadReport()">Download Report</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-secondary" (click)="clearAll()">Clear All</button>
+        </div>
+    </div>
+</div>
